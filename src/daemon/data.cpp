@@ -1,16 +1,24 @@
 #include "data.h"
+#include <fstream>
+#include "errors.h"
 
 Data::Data(const std::string &dir)
-: color_icons(), main_table()
+: color_icons(), main_table(dir + "main.tb")
 {
 	parseColors(dir + "color-icons");
-	parseTable(dir + "main.tb");
 }
 
 void Data::parseColors(const std::string &path) {
-	
-}
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		print_error("Error opening file");
+		exit(1);
+    }
 
-void Data::parseTable(const std::string &path) {
+	std::string line;
+    while (std::getline(file, line)) {
+        this->color_icons.emplace_back(line);
+    }
 
+	file.close();
 }

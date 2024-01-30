@@ -14,7 +14,6 @@ struct Data {
 	Data(const std::string &dir);
 
 	void parseColors(const std::string &path);
-	void parseTable(const std::string &path);
 };
 
 #endif

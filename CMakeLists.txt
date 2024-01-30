@@ -12,7 +12,11 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 add_executable(Rofi-Themer-daemon
         src/daemon/main.cpp
-		src/daemon/data.cpp)
+		src/daemon/data.cpp
+		src/daemon/entry.cpp
+		src/daemon/table.cpp
+)
 
 target_include_directories(Rofi-Themer-daemon
-        PUBLIC include/daemon)
+		PUBLIC include/common        
+		PUBLIC include/daemon)
