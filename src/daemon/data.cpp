@@ -22,3 +22,13 @@ void Data::parseColors(const std::string &path) {
 
 	file.close();
 }
+
+void Data::print() {
+	puts("Color icons are:");
+	for (const std::string &str : color_icons) {
+		puts(str.c_str());
+	}
+
+	puts("Data:");
+	main_table.print(1);
+}

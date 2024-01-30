@@ -28,6 +28,8 @@ struct Entry {
 	// Entry(std::vector<std::string> strings);
 	// Entry(TYPE type, Table table);
 	~Entry() = default;
+
+	void print(int depth_level) const;
 };
 
 #endif

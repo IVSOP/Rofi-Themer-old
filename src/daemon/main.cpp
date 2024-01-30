@@ -97,6 +97,7 @@ int main (int argc, char **argv) {
 	//////////////////////////////////////////////// parsing theme file
 
 	Data data(argv[1]); // will parse the data
+	data.print();
 
 	//////////////////////////////////////////////// creating daemon
 

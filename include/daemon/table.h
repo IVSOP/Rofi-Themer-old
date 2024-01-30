@@ -14,6 +14,8 @@ struct Table {
 	Table() = default;
 	Table(const std::string &path);
 	~Table() = default;
+
+	void print(int depth_level);
 };
 
 #endif

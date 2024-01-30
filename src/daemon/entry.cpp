@@ -46,6 +46,7 @@ void Entry::parseApply(std::string &line) {
 	while ((pos = line.find(';')) != std::string::npos) {
 		token = line.substr(0, pos);
 		line.erase(0, pos + 1); // 1 is len of delimiter
+		vec.push_back(token);
 		// puts(token.c_str());
 	}
 
@@ -70,4 +71,31 @@ void Entry::parseList(std::string &line, bool show_pictures) {
 	line.erase(0, pos + 1);
 
 	this->data.emplace<std::unique_ptr<List>>(std::make_unique<List>(line, show_pictures));
+}
+
+void Entry::print(int depth_level) const {
+	switch (this->type) {
+		case APPLY:
+			for (const std::string &str : std::get<std::vector<std::string>>(this->data)) {
+				std::cout << str << ";";
+			}
+			std::cout << std::endl;
+			break;
+	
+		case SUB:
+			std::cout << std::endl;
+			std::get<std::unique_ptr<Table>>(this->data).get()->print(depth_level + 1);
+			break;
+
+		case LIST:
+			std::cout << std::endl;
+
+			break;
+
+		case LIST_PICTURE:
+			std::cout << std::endl;
+
+			break;
+
+	}
 }

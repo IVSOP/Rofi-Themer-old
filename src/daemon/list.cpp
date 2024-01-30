@@ -3,5 +3,5 @@
 List::List(std::string &line, bool show_pictures)
 : show_pictures(show_pictures)
 {
-
+	puts("list parsing not done");
 }

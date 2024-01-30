@@ -43,3 +43,12 @@ Table::Table(const std::string &path) {
 
 	file.close();
 }
+
+void Table::print(int depth_level) {
+	std::cout << std::setw((depth_level - 1) * 4) << "" << "[" << std::endl;
+	for (const auto &entrypair : this->data) {
+		std::cout << std::setw(depth_level * 4) << "" << entrypair.first << " (" << entrypair.second.active_theme << "): ";
+		entrypair.second.print(depth_level);
+	}
+	std::cout << std::setw((depth_level - 1) * 4) << "" << "] most used: " << this->most_used << std::endl;
+}

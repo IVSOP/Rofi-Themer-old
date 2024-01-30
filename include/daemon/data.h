@@ -14,6 +14,7 @@ struct Data {
 	Data(const std::string &dir);
 
 	void parseColors(const std::string &path);
+	void print();
 };
 
 #endif
