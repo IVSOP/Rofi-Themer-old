@@ -76,8 +76,44 @@ void Entry::parseList(std::string &line, bool show_pictures) {
 	this->data.emplace<std::unique_ptr<List>>(std::make_unique<List>(line, show_pictures));
 }
 
-void Entry::parseApplyList(std::string &line) {
+// bad at naming thiungs, parses [....] into vec of strings
+void parseApplyListAux(std::string &list, std::vector<std::string> &vec) {
+	size_t pos;
+	std::string token;
+	while ((pos = list.find(';')) != std::string::npos) {
+		token = list.substr(0, pos);
+		if (token.length() > 0) vec.push_back(token);
+		list.erase(0, pos + 1); // 1 is len of delimiter
+		// puts(token.c_str());
+	}
+}
 
+void Entry::parseApplyList(std::string &line) {
+	// got lazy moving this to main function
+	size_t pos = line.find(';');
+	// // if pos == std::string::npos.....
+	this->active_theme = std::stoi(line);
+	line.erase(0, pos + 1);
+
+	std::vector<std::vector<std::string>> main_vec;
+	
+
+	// separate all [lists], parse them individually
+	size_t start = line.find('['),
+	end = line.find(']');
+	std::string token;
+	while (start != std::string::npos) {
+		token = line.substr(start + 1, end - 2); // why did -1 not work wtf I give up
+		std::vector<std::string> vec;
+		parseApplyListAux(token, vec);
+		main_vec.push_back(vec);
+
+		line.erase(0, end + 1);
+		start = line.find('['),
+		end = line.find(']');
+	}
+
+	this->data = main_vec;
 }
 
 void Entry::print(int depth_level) const {
@@ -87,6 +123,18 @@ void Entry::print(int depth_level) const {
 				std::cout << str << ";";
 			}
 			std::cout << std::endl;
+			break;
+		
+		case APPLY_LIST: // why is the depth_level different here from everywhere else wtf
+			std::cout << std::endl;
+			std::cout << std::setw(depth_level * 4) << "" << "{" << std::endl;
+			for (const auto &vec : std::get<std::vector<std::vector<std::string>>>(this->data)) {
+				for (const auto &str : vec) {
+					std::cout << std::setw((depth_level + 1)  * 4) << "" << str << ";";
+				}
+				std::cout << std::endl;
+			}
+			std::cout << std::setw(depth_level * 4) << "" << "} (apply)" << std::endl;
 			break;
 	
 		case SUB:
