@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <iostream>
 
 // type of entry
 enum TYPE {

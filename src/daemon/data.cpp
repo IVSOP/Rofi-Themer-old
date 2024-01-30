@@ -16,8 +16,12 @@ void Data::parseColors(const std::string &path) {
     }
 
 	std::string line;
+	const std::string delim = "#";
     while (std::getline(file, line)) {
-        this->color_icons.emplace_back(line);
+		// ignore comments, only valid at the start of the line for now
+		// if (line.compare(0, delim.length(), delim) != 0) {
+        	this->color_icons.emplace_back(line);
+		// } did not implement this, when files get overwritten it all goes away
     }
 
 	file.close();

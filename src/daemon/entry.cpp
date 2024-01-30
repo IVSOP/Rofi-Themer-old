@@ -45,8 +45,8 @@ void Entry::parseApply(std::string &line) {
 
 	while ((pos = line.find(';')) != std::string::npos) {
 		token = line.substr(0, pos);
+		if (token.length() > 0) vec.push_back(token);
 		line.erase(0, pos + 1); // 1 is len of delimiter
-		vec.push_back(token);
 		// puts(token.c_str());
 	}
 
@@ -89,12 +89,12 @@ void Entry::print(int depth_level) const {
 
 		case LIST:
 			std::cout << std::endl;
-
+			std::get<std::unique_ptr<List>>(this->data).get()->print(depth_level + 1);
 			break;
 
 		case LIST_PICTURE:
 			std::cout << std::endl;
-
+			std::get<std::unique_ptr<List>>(this->data).get()->print(depth_level + 1);
 			break;
 
 	}
