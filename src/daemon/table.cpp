@@ -1,13 +1,17 @@
 #include "table.h"
 #include <fstream>
 #include "errors.h"
+#include <algorithm>
 
 Table::Table(const std::string &path) {
 	std::ifstream file(path);
 	if (!file.is_open()) {
 		print_error("Error opening file");
+		fprintf(stderr, "'%s'\n", path.c_str());
 		exit(1);
     }
+
+	printf("parsing %s\n", path.c_str());
 
 	std::string line;
 	size_t pos;
@@ -16,8 +20,26 @@ Table::Table(const std::string &path) {
 		std::string name = line.substr(0, pos);
 		std::string data = line.substr(pos + 1);
 
-		this->data.emplace(name, data); // careful, calls Entry(line)
+		// WHAT THE FUCK?????? most cursed thing I have ever seen. why can I not just enter 3 arguments and live in peace wtf
+		this->data.emplace(
+			::std::piecewise_construct, // special to enable forwarding
+			::std::forward_as_tuple(name), // arguments for key constructor
+			::std::forward_as_tuple(name, data) // arguments for value constructor
+		);
+		// this->data.emplace(name, Entry(name, data)); // error wtf???
     }
+
+	// calculate most used themes
+	std::vector<int> themes(data.size());
+	for (unsigned int i = 0; i < themes.size(); i++) {
+		themes[i] = 0;
+	}
+	for (const auto &entrypair : this->data) {
+		themes[entrypair.second.active_theme] += 1; // if not set, will be -1, segfault prob
+	}
+
+	// this is to find the max, got lazy
+	this->most_used = std::distance(themes.begin(),std::max_element(themes.begin(), themes.end()));
 
 	file.close();
 }

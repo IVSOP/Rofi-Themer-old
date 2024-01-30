@@ -15,6 +15,7 @@ add_executable(Rofi-Themer-daemon
 		src/daemon/data.cpp
 		src/daemon/entry.cpp
 		src/daemon/table.cpp
+		src/daemon/list.cpp
 )
 
 target_include_directories(Rofi-Themer-daemon
