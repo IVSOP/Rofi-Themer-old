@@ -14,6 +14,9 @@ Entry::Entry(const std::string &name, std::string &line) {
 	if (typestr == "apply") {
 		this->type = APPLY;
 		parseApply(data);
+	} else if (typestr == "apply_list") {
+		this->type = APPLY_LIST;
+		parseApplyList(data);
 	} else if (typestr == "sub") {
 		this->type = SUB;
 		parseSub(name, data);
@@ -71,6 +74,10 @@ void Entry::parseList(std::string &line, bool show_pictures) {
 	line.erase(0, pos + 1);
 
 	this->data.emplace<std::unique_ptr<List>>(std::make_unique<List>(line, show_pictures));
+}
+
+void Entry::parseApplyList(std::string &line) {
+
 }
 
 void Entry::print(int depth_level) const {

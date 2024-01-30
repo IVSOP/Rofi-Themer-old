@@ -15,6 +15,7 @@ struct Entry {
 		// HOW DO THESE POINTERS GET FREED WTF
 	std::variant<
 			std::vector<std::string>, // case of apply
+			std::vector<std::vector<std::string>>, // case of apply list. not a List because easier this way, no other reason, might change
 			std::unique_ptr<Table>, // case of both subtable and list are both represented as a new table. pointer due to circular dependency
 			std::unique_ptr<List> // case of being a list, cannot be a table unfortunately. could be object and not pointer, but this makes it consistent
 	> data;
@@ -23,6 +24,7 @@ struct Entry {
 	Entry() = default;
 	Entry(const std::string &name, std::string &line); // receives line, parses it
 	void parseApply(std::string &line);
+	void parseApplyList(std::string &line);
 	void parseSub(const std::string &name, std::string &line);
 	void parseList(std::string &line, bool show_pictures);
 	// Entry(std::vector<std::string> strings);

@@ -17,9 +17,14 @@ void List::parseList(std::string list) {
 List::List(std::string &line, bool show_pictures)
 : show_pictures(show_pictures), data()
 {
+	// get selected option, should be first number
+	size_t start = line.find(';');
+	this->selected_option = std::stoi(line);
+	line.erase(0, start + 1);
+
 	// separate all [lists], parse them individually
-	size_t start = line.find('['),
-	end = line.find(']');
+	start = line.find('[');
+	size_t end = line.find(']');
 	std::string token;
 	while (start != std::string::npos) {
 		token = line.substr(start + 1, end - 2); // why did -1 not work wtf I give up
@@ -40,5 +45,5 @@ void List::print(int depth_level) {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::setw((depth_level - 1) * 4) << "" << "}" << std::endl;
+	std::cout << std::setw((depth_level - 1) * 4) << "" << "} selected: " << this->selected_option << std::endl;
 }
