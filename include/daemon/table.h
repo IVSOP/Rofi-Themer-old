@@ -16,6 +16,9 @@ struct Table {
 	~Table() = default;
 
 	void print(int depth_level);
+
+	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
+	std::string read(std::string &input) const;
 };
 
 #endif

@@ -21,6 +21,8 @@ public:
 
 	void print(int depth_level);
 
+	std::string read(std::string &input, int active_theme) const; // needs theme because it does not know it itself
+
 private:
 	void parseList(std::string list); // NOT a reference!!! afraid the erase() would mess everything up
 };

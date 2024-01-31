@@ -15,6 +15,7 @@ struct Data {
 
 	void parseColors(const std::string &path);
 	void print();
+	std::string read(std::string &input) const;
 };
 
 #endif

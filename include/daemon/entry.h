@@ -16,7 +16,7 @@ struct Entry {
 	std::variant<
 			std::vector<std::string>, // case of apply
 			std::vector<std::vector<std::string>>, // case of apply list. not a List because easier this way, no other reason, might change
-			std::unique_ptr<Table>, // case of both subtable and list are both represented as a new table. pointer due to circular dependency
+			std::unique_ptr<Table>, // case of subtable is represented as a new table. pointer due to circular dependency
 			std::unique_ptr<List> // case of being a list, cannot be a table unfortunately. could be object and not pointer, but this makes it consistent
 	> data;
 	int active_theme; // theme selected as active for this entry
@@ -32,6 +32,8 @@ struct Entry {
 	~Entry() = default;
 
 	void print(int depth_level) const;
+	// same as table, go read
+	std::string read(std::string &input) const;
 };
 
 #endif

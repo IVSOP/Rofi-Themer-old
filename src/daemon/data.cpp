@@ -36,3 +36,7 @@ void Data::print() {
 	puts("Data:");
 	main_table.print(1);
 }
+
+std::string Data::read(std::string &input) const {
+	return this->main_table.read(input);
+}

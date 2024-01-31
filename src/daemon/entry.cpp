@@ -124,7 +124,7 @@ void Entry::print(int depth_level) const {
 			}
 			std::cout << std::endl;
 			break;
-		
+
 		case APPLY_LIST: // why is the depth_level different here from everywhere else wtf
 			std::cout << std::endl;
 			std::cout << std::setw(depth_level * 4) << "" << "{" << std::endl;
@@ -136,7 +136,7 @@ void Entry::print(int depth_level) const {
 			}
 			std::cout << std::setw(depth_level * 4) << "" << "} (apply)" << std::endl;
 			break;
-	
+
 		case SUB:
 			std::cout << std::endl;
 			std::get<std::unique_ptr<Table>>(this->data).get()->print(depth_level + 1);
@@ -151,6 +151,42 @@ void Entry::print(int depth_level) const {
 			std::cout << std::endl;
 			std::get<std::unique_ptr<List>>(this->data).get()->print(depth_level + 1);
 			break;
+	}
+}
 
+std::string Entry::read(std::string &input) const {
+	switch (this->type) { // not making a jump table due to poor readability, I will assume compiler does it for me
+		case APPLY:
+			{ // wtf
+				// check if 0 size????
+				const std::vector<std::string> &vec = std::get<std::vector<std::string>>(this->data);
+				return vec[this->active_theme]; // + "\n";
+				break;
+			}
+
+		case APPLY_LIST:
+			{
+				const std::vector<std::vector<std::string>> &vec = std::get<std::vector<std::vector<std::string>>>(this->data);
+				std::string res = "";
+				for (const std::string &str : vec[this->active_theme]) {
+					res += str + "\n";
+				}
+				return res;
+			}
+
+		case SUB:
+			return std::get<std::unique_ptr<Table>>(this->data).get()->read(input);
+			break;
+
+		case LIST:
+			return std::get<std::unique_ptr<List>>(this->data).get()->read(input, this->active_theme);
+			break;
+
+		case LIST_PICTURE:
+			return std::get<std::unique_ptr<List>>(this->data).get()->read(input, this->active_theme);
+			break;
+
+		default: // I will assume the type can never be anything else ever, but this way compiler shuts up
+			return "error";
 	}
 }

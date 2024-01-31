@@ -52,3 +52,18 @@ void Table::print(int depth_level) {
 	}
 	std::cout << std::setw((depth_level - 1) * 4) << "" << "] most used: " << this->most_used << std::endl;
 }
+
+std::string Table::read(std::string &input) const {
+	size_t pos = input.find('/');
+	if (pos == std::string::npos) {
+		// error..........................
+	}
+	std::string name = input.substr(0, pos);
+	const Entry &entry = this->data.at(name);
+	
+	// catch the exception.................
+	
+	input.erase(0, pos + 1); // 1 is len of delimiter
+
+	return entry.read(input);
+}
