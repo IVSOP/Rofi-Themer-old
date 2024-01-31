@@ -166,7 +166,7 @@ std::string Entry::read(std::string &input) const {
 			{ // wtf
 				// check if 0 size????
 				const std::vector<std::string> &vec = std::get<std::vector<std::string>>(this->data);
-				return vec[this->active_theme]; // + "\n";
+				return vec[this->active_theme] + "\n";
 				break;
 			}
 
@@ -185,11 +185,11 @@ std::string Entry::read(std::string &input) const {
 			break;
 
 		case LIST:
-			return std::get<std::unique_ptr<List>>(this->data).get()->read(input, this->active_theme);
+			return std::get<std::unique_ptr<List>>(this->data).get()->read(this->active_theme);
 			break;
 
 		case LIST_PICTURE:
-			return std::get<std::unique_ptr<List>>(this->data).get()->read(input, this->active_theme);
+			return std::get<std::unique_ptr<List>>(this->data).get()->read(this->active_theme);
 			break;
 
 		default: // I will assume the type can never be anything else ever, but this way compiler shuts up

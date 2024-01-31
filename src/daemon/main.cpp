@@ -99,7 +99,7 @@ int main (int argc, char **argv) {
 	Data data(argv[1]); // will parse the data
 	data.print();
 
-	std::string input = "rofi/network-manager";
+	std::string input = "rofi/*";
 	puts(data.read(input).c_str());
 
 	//////////////////////////////////////////////// creating daemon

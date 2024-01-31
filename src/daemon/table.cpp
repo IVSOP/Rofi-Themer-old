@@ -59,11 +59,19 @@ std::string Table::read(std::string &input) const {
 		// error..........................
 	}
 	std::string name = input.substr(0, pos);
-	const Entry &entry = this->data.at(name);
-	
-	// catch the exception.................
-	
-	input.erase(0, pos + 1); // 1 is len of delimiter
-
-	return entry.read(input);
+	if (name == "*") { // get all the data
+		std::string wildcard = "*"; // got lazy
+		std::string res = "";
+		for (const auto &entrypair : this->data) { // got lazy iterating values only
+			res += entrypair.second.read(wildcard);
+		}
+		return res;
+	} else {
+		const Entry &entry = this->data.at(name);
+		
+		// catch the exception.................
+		
+		input.erase(0, pos + 1); // 1 is len of delimiter
+		return entry.read(input);
+	}
 }

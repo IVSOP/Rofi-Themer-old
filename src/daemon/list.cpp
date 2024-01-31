@@ -52,7 +52,7 @@ void List::print(int depth_level) {
 	std::cout << std::setw((depth_level - 1) * 4) << "" << "} selected: " << this->selected_option << std::endl;
 }
 
-std::string List::read(std::string &input, int active_theme) const {
+std::string List::read(int active_theme) const {
 	const std::vector<std::string> &vec = this->data[active_theme];
 	return vec[this->selected_option] + "\n";
 }
