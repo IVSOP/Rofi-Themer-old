@@ -5,12 +5,16 @@ void List::parseList(std::string list) {
 	size_t pos;
 	std::string token;
 	std::vector<std::string> vec;
-	while ((pos = list.find(';')) != std::string::npos) {
+
+	do {
+		pos = list.find(';');
 		token = list.substr(0, pos);
 		if (token.length() > 0) vec.push_back(token);
 		list.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
-	}
+
+	} while (pos != std::string::npos);
+
 	this->data.push_back(vec); // WARNING THIS ASSUMES CORRECT THEME ORDER
 }
 

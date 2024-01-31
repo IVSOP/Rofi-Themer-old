@@ -97,7 +97,7 @@ int main (int argc, char **argv) {
 	//////////////////////////////////////////////// parsing theme file
 
 	Data data(argv[1]); // will parse the data
-	// data.print();
+	data.print();
 
 	std::string input = "rofi/network-manager";
 	puts(data.read(input).c_str());

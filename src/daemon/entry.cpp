@@ -46,12 +46,15 @@ void Entry::parseApply(std::string &line) {
 	this->active_theme = std::stoi(line);
 	line.erase(0, pos + 1);
 
-	while ((pos = line.find(';')) != std::string::npos) {
+	// loops like these are do while since the last element is ";..." and not ";...;"
+
+	do {
+		pos = line.find(';');
 		token = line.substr(0, pos);
 		if (token.length() > 0) vec.push_back(token);
 		line.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
-	}
+	} while (pos != std::string::npos);
 
 	this->data = vec;
 }
@@ -76,16 +79,17 @@ void Entry::parseList(std::string &line, bool show_pictures) {
 	this->data.emplace<std::unique_ptr<List>>(std::make_unique<List>(line, show_pictures));
 }
 
-// bad at naming thiungs, parses [....] into vec of strings
+// bad at naming things, parses [....] into vec of strings
 void parseApplyListAux(std::string &list, std::vector<std::string> &vec) {
 	size_t pos;
 	std::string token;
-	while ((pos = list.find(';')) != std::string::npos) {
+	do {
+		pos = list.find(';');
 		token = list.substr(0, pos);
 		if (token.length() > 0) vec.push_back(token);
 		list.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
-	}
+	} while (pos != std::string::npos);
 }
 
 void Entry::parseApplyList(std::string &line) {
@@ -103,7 +107,9 @@ void Entry::parseApplyList(std::string &line) {
 	end = line.find(']');
 	std::string token;
 	while (start != std::string::npos) {
-		token = line.substr(start + 1, end - 2); // why did -1 not work wtf I give up
+		// std::cout << "parsing line " << line << std::endl;
+		token = line.substr(start + 1, end - 1 - start);
+		// std::cout << "parsing list " << token << std::endl;
 		std::vector<std::string> vec;
 		parseApplyListAux(token, vec);
 		main_vec.push_back(vec);
