@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#define MESSAGE_STR_SIZE 256
+
 enum MESSAGE_TYPE {
 	READ = 'r',
 	MENU = 'm',
@@ -11,15 +13,27 @@ enum MESSAGE_TYPE {
 	UNDEF = 'u'  // reserved for code below
 };
 
+// missing constructors etc, will add them later
 struct Message {
 	MESSAGE_TYPE type;
-	char str[256];
+	char str[MESSAGE_STR_SIZE];
 
 	Message()
 	: type(UNDEF) {
-		memset(str, '\0', 256);
+		memset(str, '\0', MESSAGE_STR_SIZE);
 	}
 	~Message() = default;
+};
+
+struct OutMessage {
+	uint32_t len;
+	char str[MESSAGE_STR_SIZE];
+
+	OutMessage()
+	: len(0) {
+		memset(str, '\0', MESSAGE_STR_SIZE);
+	}
+	~OutMessage() = default;
 };
 
 #endif

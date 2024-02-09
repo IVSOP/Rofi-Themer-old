@@ -45,9 +45,9 @@ void Table::print(int depth_level) {
 
 std::string Table::read(std::string &input) const {
 	size_t pos = input.find('/');
-	if (pos == std::string::npos) {
-		// error..........................
-	}
+	// if (pos == std::string::npos) {
+	// 	print_error("read is invalid");
+	// }
 	std::string name = input.substr(0, pos);
 	if (name == "*") { // get all the data
 		std::string wildcard = "*"; // got lazy
