@@ -12,54 +12,19 @@
 #include <string.h>
 #include <arpa/inet.h>
 
+#include "errors.h"
+
+#define TEMP_PATH "data/"
+
 #define PORT 8080
-
-// message is "<mode>/<remaining string>"
-// q: query
-// m: menu
-// because it is string it is assumed to be null terminated
-// void messageHandler(char *buffer, OUT_STRING *res) {
-// 	switch (buffer[0])
-// 	{
-// 	case 'q': // query
-// 		queryHandler(data, buffer + 2, res);
-// 		break;
-// 	case 'm': // menu
-// 		menuHandler(data, buffer + 2, res);
-// 		break;
-
-// 	case 'k': // kill
-// 		sigterm_handler(SIGTERM);
-// 		break;
-	
-// 	case 'w': // save to file (idk it probably uses $HOME to figure out the path)
-// 		saveTableToFile(data, "table", dir);
-// 		res->len = 5;
-// 		strcpy(res->str, "Saved");
-// 		// send(client_fd, "Saved", 5, 0);
-// 		break;
-
-// 	case 'd': // print debug of entire data, will not work in daemon mode as stdout is closed 
-// 		// will improve in the future to dump into a file
-// 		dumpTable(data, 0);
-// 		close(client_fd);
-// 		break;
-	
-// 	default:
-// 		break;
-// 		// exit(EXIT_FAILURE);
-
-// 	}
-// }
-
 
 // argv[1] == directory with data
 int main (int argc, char **argv) {
 	// parse data
-	if (argc < 2) {
-		fprintf(stderr, "Insuficient arguments: need dataset path\n");
-		exit(EXIT_FAILURE);
-	}
+	// if (argc < 2) {
+	// 	fprintf(stderr, "Insuficient arguments: need dataset path\n");
+	// 	exit(EXIT_FAILURE);
+	// }
 
 	//////////////////////////////////////////////// creating socket
 
@@ -96,11 +61,20 @@ int main (int argc, char **argv) {
 
 	//////////////////////////////////////////////// parsing theme file
 
-	Data data(argv[1]); // will parse the data
-	data.print();
+	// Data data(argv[1]); // will parse the data
+	Data data(TEMP_PATH);
+	// data.print();
 
-	std::string input = "rofi/*";
-	puts(data.read(input).c_str());
+	// std::string input = "rofi/*";
+	// puts(data.read(input).c_str());
+
+	std::string input = "1/dunst";
+	std::string res = data.menu(input);
+
+	// this is kind of cursed but the string has some \0 and they would get cutoff otherwise
+	if (write(STDOUT_FILENO, res.c_str(), res.size()) == -1) {
+		print_error("Error writing data");
+	}
 
 	//////////////////////////////////////////////// creating daemon
 

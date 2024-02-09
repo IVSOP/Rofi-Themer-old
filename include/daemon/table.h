@@ -17,8 +17,11 @@ struct Table {
 
 	void print(int depth_level);
 
-	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
+	void calcMostUsed();
+
 	std::string read(std::string &input) const;
+	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
+	std::string menu(int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons);
 };
 
 #endif

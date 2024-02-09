@@ -125,7 +125,7 @@ void Entry::parseApplyList(std::string &line) {
 void Entry::print(int depth_level) const {
 	switch (this->type) {
 		case APPLY:
-			for (const std::string &str : std::get<std::vector<std::string>>(this->data)) {
+			for (const std::string &str : std::get<APPLY_DATA>(this->data)) {
 				std::cout << str << ";";
 			}
 			std::cout << std::endl;
@@ -134,7 +134,7 @@ void Entry::print(int depth_level) const {
 		case APPLY_LIST: // why is the depth_level different here from everywhere else wtf
 			std::cout << std::endl;
 			std::cout << std::setw(depth_level * 4) << "" << "{" << std::endl;
-			for (const auto &vec : std::get<std::vector<std::vector<std::string>>>(this->data)) {
+			for (const auto &vec : std::get<APPLY_LIST_DATA>(this->data)) {
 				for (const auto &str : vec) {
 					std::cout << std::setw((depth_level + 1)  * 4) << "" << str << ";";
 				}
@@ -145,17 +145,17 @@ void Entry::print(int depth_level) const {
 
 		case SUB:
 			std::cout << std::endl;
-			std::get<std::unique_ptr<Table>>(this->data).get()->print(depth_level + 1);
+			std::get<SUB_DATA>(this->data).get()->print(depth_level + 1);
 			break;
 
 		case LIST:
 			std::cout << std::endl;
-			std::get<std::unique_ptr<List>>(this->data).get()->print(depth_level + 1);
+			std::get<LIST_DATA>(this->data).get()->print(depth_level + 1);
 			break;
 
 		case LIST_PICTURE:
 			std::cout << std::endl;
-			std::get<std::unique_ptr<List>>(this->data).get()->print(depth_level + 1);
+			std::get<LIST_DATA>(this->data).get()->print(depth_level + 1);
 			break;
 	}
 }
@@ -165,14 +165,14 @@ std::string Entry::read(std::string &input) const {
 		case APPLY:
 			{ // wtf
 				// check if 0 size????
-				const std::vector<std::string> &vec = std::get<std::vector<std::string>>(this->data);
+				const APPLY_DATA &vec = std::get<APPLY_DATA>(this->data);
 				return vec[this->active_theme] + "\n";
 				break;
 			}
 
 		case APPLY_LIST:
 			{
-				const std::vector<std::vector<std::string>> &vec = std::get<std::vector<std::vector<std::string>>>(this->data);
+				const APPLY_LIST_DATA &vec = std::get<APPLY_LIST_DATA>(this->data);
 				std::string res = "";
 				for (const std::string &str : vec[this->active_theme]) {
 					res += str + "\n";
@@ -181,15 +181,50 @@ std::string Entry::read(std::string &input) const {
 			}
 
 		case SUB:
-			return std::get<std::unique_ptr<Table>>(this->data).get()->read(input);
+			return std::get<SUB_DATA>(this->data).get()->read(input);
 			break;
 
 		case LIST:
-			return std::get<std::unique_ptr<List>>(this->data).get()->read(this->active_theme);
+			return std::get<LIST_DATA>(this->data).get()->read(this->active_theme);
 			break;
 
 		case LIST_PICTURE:
-			return std::get<std::unique_ptr<List>>(this->data).get()->read(this->active_theme);
+			return std::get<LIST_DATA>(this->data).get()->read(this->active_theme);
+			break;
+
+		default: // I will assume the type can never be anything else ever, but this way compiler shuts up
+			return "error";
+	}
+}
+
+std::string Entry::print_option(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const {
+	return rofi_message(name, color_icons[this->active_theme], info);
+}
+
+// print only func, called only by the table. otherwise, apply and apply list would have teir options changed
+std::string Entry::menu(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const {
+	print_option(name, info + "/" + name, color_icons);
+}
+
+// info + "/" + name repeated seems bad, but makes easier to implement 'Back', read Table::menu()
+std::string Entry::menu(const std::string &name, int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons) {
+	switch (this->type) {
+		case APPLY: // no further parsing required, option needs to be set. maybe see if string is "" for safety?
+			this->active_theme = theme;
+			return print_option(name, info + "/" + name, color_icons);
+			break;
+		case APPLY_LIST:
+			this->active_theme = theme;
+			return print_option(name, info + "/" + name, color_icons);
+			break;
+		case SUB: // need to go into subtable
+			return "sub";
+			break;
+		case LIST:
+			return "list";
+			break;
+		case LIST_PICTURE:
+			return "pics";
 			break;
 
 		default: // I will assume the type can never be anything else ever, but this way compiler shuts up

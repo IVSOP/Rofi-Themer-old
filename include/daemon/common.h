@@ -7,13 +7,21 @@
 #include <iostream>
 
 // type of entry
-// ignore numbers, ended up not using them
+// ended up not using this powers of 2, didnt know how to do it in a switch statement
 enum TYPE {
-	APPLY = 0,        // apply this setting
-	SUB = 1,          // goes into subtable
-	LIST = 2,         // show list of options, can only pick 1
-	LIST_PICTURE = 4, // same but strings are pictures
-	APPLY_LIST = 8
+	APPLY = 1,        // apply this setting
+	SUB = 2,          // goes into subtable
+	LIST = 4,         // show list of options, can only pick 1
+	LIST_PICTURE = 8, // same but strings are pictures
+	APPLY_LIST = 16
 };
+
+#define APPLY_DATA std::vector<std::string>
+#define APPLY_LIST_DATA std::vector<std::vector<std::string>> // not a List because easier this way, no other reason, might change
+#define SUB_DATA std::unique_ptr<Table> // case of subtable is represented as a new table. pointer due to circular dependency
+#define LIST_DATA std::unique_ptr<List> // case of being a list, cannot be a table unfortunately. could be object and not pointer, but this makes it consistent
+
+
+std::string rofi_message(const std::string &text, const std::string &icon, const std::string &info);
 
 #endif

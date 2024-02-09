@@ -40,3 +40,20 @@ void Data::print() {
 std::string Data::read(std::string &input) const {
 	return this->main_table.read(input);
 }
+
+std::string Data::menu(std::string &input) {
+	size_t pos = input.find('/');
+	if (pos == std::string::npos) { // show main menu
+		std::string res = "";
+		// display main menu. done here and not in the table itself since it is an exception that can only happen at the start
+		for (unsigned int i = 0; i < this->color_icons.size(); i++) {
+			res += rofi_message("Theme " + std::to_string(i), color_icons[i], std::to_string(i) + "/");
+		}
+		return res;
+	} else {
+		int theme = std::stoi(input.substr(0, pos));
+		std::string options = input.substr(pos + 1); // from pos + 1 to the end
+		std::string themestr = std::to_string(theme);
+		return this->main_table.menu(theme, options, themestr, this->color_icons);
+	}
+}
