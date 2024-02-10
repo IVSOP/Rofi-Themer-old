@@ -24,11 +24,11 @@ target_include_directories(Rofi-Themer-daemon
 		PUBLIC include/daemon
 )
 
-add_executable(Rofi-Themer-client
-		src/client/main.cpp
+add_executable(Rofi-Themer-menu
+		src/menu/main.cpp
 )
 
-target_include_directories(Rofi-Themer-client
+target_include_directories(Rofi-Themer-menu
 		PUBLIC include/common        
-		PUBLIC include/client
+		PUBLIC include/menu
 )

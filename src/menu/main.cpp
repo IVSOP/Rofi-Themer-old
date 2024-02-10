@@ -17,18 +17,10 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-// argv[1] is dataset path
-// argv[2] is the base query, like "r/" or "m/", should be done by a script that calls this
-int main (int argc, char **argv) {
-	if (argc < 2) {
-		fprintf(stderr, "Insuficient arguments: need path to dir with socket\n");
-		return EXIT_FAILURE;
-	}
+#define SOCK_PATH "build/Themer-socket" // change this as needed
+#define QUERY "m/"
 
-	if (argc < 3) {
-		fprintf(stderr, "Insuficient arguments: need base query\n");
-		return EXIT_FAILURE;
-	}
+int main (int argc, char **argv) {
 
 	int sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sockfd < 0) {
@@ -40,8 +32,7 @@ int main (int argc, char **argv) {
     server_addr.sun_family = AF_UNIX;
 
 	// this is also VERY bad and WILL crash for big strings, rewrite, the daemon has this as well wtf
-	strncpy(server_addr.sun_path, argv[1], sizeof(server_addr.sun_path) - 1);
-    strncpy(server_addr.sun_path + strlen(argv[1]), "Themer-socket", sizeof(server_addr.sun_path) - 1);
+	strncpy(server_addr.sun_path, SOCK_PATH, sizeof(server_addr.sun_path) - 1);
 
 	socklen_t data_len = strlen(server_addr.sun_path) + sizeof(server_addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
@@ -51,24 +42,14 @@ int main (int argc, char **argv) {
     }
 
 	Message msg;
-	// this is all very ugly overall, idk, will rewrite
-	strncpy(msg.str, argv[2], MESSAGE_STR_SIZE);
+	msg.type = MENU;
+	// strncpy(msg.str, QUERY, MESSAGE_STR_SIZE); wrong, query is in the message type and not as a string
 
-	// got lazy. error checking also missing
-	std::string type = argv[2];
-	size_t pos = type.find('/');
-	std::string typestr = type.substr(0, pos + 1);
-	if (typestr == "r/") {
-		msg.type = READ;
-	} else if (typestr == "m/") {
-		msg,type = MENU;
-		char *info = getenv("ROFI_INFO");
-		if (info != nullptr) {
-			strncpy(msg.str + strlen(argv[1]), info, MESSAGE_STR_SIZE - strlen(argv[1]));
-		}
-	} else {
-		puts("Error type");
+	char *info = getenv("ROFI_INFO");
+	if (info != nullptr) {
+		strncpy(msg.str, info, MESSAGE_STR_SIZE);
 	}
+
 
 	write(sockfd, &msg, sizeof(Message));
 
