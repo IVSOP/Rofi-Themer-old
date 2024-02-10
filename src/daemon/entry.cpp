@@ -205,34 +205,3 @@ std::string Entry::print_option(const std::string &name, const std::string &info
 std::string Entry::menu(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const {
 	return print_option(name, info + "/" + name, color_icons);
 }
-
-// info + "/" + name repeated seems bad, but makes easier to implement 'Back', read Table::menu()
-std::string Entry::menu(const std::string &name, int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons) {
-	switch (this->type) {
-		case APPLY: // no further parsing required, option needs to be set. maybe see if string is "" for safety?
-			this->active_theme = theme;
-			return print_option(name, info + "/" + name, color_icons);
-			break;
-		case APPLY_LIST:
-			this->active_theme = theme;
-			return print_option(name, info + "/" + name, color_icons);
-			break;
-		case SUB: // need to go into subtable
-			{
-				std::string why_is_this_needed = info + "/" + name;
-				std::string back = info + "/"; // 😭😭 I'm in way too deep to change this now, in the future might redo the whole info thing
-				return std::get<SUB_DATA>(this->data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
-				// this->active_theme = ...
-				break;
-			}
-		case LIST:
-			return "list";
-			break;
-		case LIST_PICTURE:
-			return "pics";
-			break;
-
-		default: // I will assume the type can never be anything else ever, but this way compiler shuts up
-			return "error";
-	}
-}

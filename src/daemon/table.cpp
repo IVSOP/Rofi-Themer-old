@@ -90,6 +90,53 @@ std::string Table::print_all(const std::string &info) {
 	return rofi_message(str, info + "/*");
 }
 
+// info + "/" + name repeated seems bad, but makes easier to implement 'Back'
+// very unfortunate that it had to be done this way, for example applying an option needs to print the parent table, it would be a mess if this was controled by entries themselves and not parent table
+// the readonly function is still there though
+std::string Table::showEntry(Entry &entry, const std::string &name, int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
+	switch (entry.type) {
+		case APPLY: // no further parsing required, option needs to be set. maybe see if string is "" for safety?
+			entry.active_theme = theme;
+			calcMostUsed();
+			return menu_all(info, back_info, color_icons);
+			break;
+		case APPLY_LIST:
+			entry.active_theme = theme;
+			calcMostUsed();
+			return menu_all(info, back_info, color_icons);
+			break;
+		case SUB: // need to go into subtable
+			{
+				std::string why_is_this_needed = info + "/" + name;
+				std::string back = info + "/"; // 😭😭 I'm in way too deep to change this now, in the future might redo the whole info thing
+				return std::get<SUB_DATA>(entry.data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
+				// this->active_theme = ...
+				break;
+			}
+		case LIST:
+			return "list";
+			break;
+		case LIST_PICTURE:
+			return "pics";
+			break;
+
+		default: // I will assume the type can never be anything else ever, but this way compiler shuts up
+			return "error";
+	}
+}
+
+// show all options in menu format
+std::string Table::menu_all(const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
+	std::string res = print_all(info);
+	for (const auto &entrypair : this->data) { // got lazy iterating values only
+		// printf("Adding %s\n", entrypair.first.c_str());
+		res += entrypair.second.menu(entrypair.first, info, color_icons); // this menu func only displays their name
+	}
+	// write(STDOUT_FILENO, res.c_str(), res.size());
+	res += print_back(back_info);
+	return res;
+}
+
 // info needs to be passed, so that all the tables before it can add things to it, otherwise it would be lost
 // in the input string that were parsed were erased
 
@@ -109,28 +156,16 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 
 
 	if (token.length() == 0) { // show menu of this table
-		std::string res = print_all(info);
-		for (const auto &entrypair : this->data) { // got lazy iterating values only
-			// printf("Adding %s\n", entrypair.first.c_str());
-			res += entrypair.second.menu(entrypair.first, info, color_icons); // this menu func only displays their name
-		}
-		// write(STDOUT_FILENO, res.c_str(), res.size());
-		res += print_back(back_info);
-		return res;
+		return menu_all(info, back_info, color_icons);
 	} else if (token == "*") { // apply all options on this table
 		return "*(All) not implemented";
 	} else {
 		try {
 			Entry &entry = this->data.at(token);
 
-			std::string rofi_str = entry.menu(token, theme, input, info, color_icons);
+			return showEntry(entry, token, theme, input, info, back_info, color_icons);
+			// std::string rofi_str = entry.menu(token, theme, input, info, color_icons);
 
-			// since we do not know if things were changed or not, since going into a new menu may or may not result in changes, allways recalculate most used themes
-			calcMostUsed();
-
-			// rofi_active();
-
-			return rofi_str;
 		} catch (const std::out_of_range& e) {
 			printf("'%s' does not exist in the map\n", token);
 			exit(EXIT_FAILURE);

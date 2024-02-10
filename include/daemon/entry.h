@@ -35,7 +35,7 @@ struct Entry {
 	// 2 methods too allow to distinguish between 'selecting' option or just reading it
 	std::string menu(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const; // assumes read only
 	std::string print_option(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const; // doubles for apply_list
-	std::string menu(const std::string &name, int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons);
+	// std::string menu(const std::string &name, int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons);
 };
 
 #endif

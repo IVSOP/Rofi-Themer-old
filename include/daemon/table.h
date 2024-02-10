@@ -21,9 +21,10 @@ struct Table {
 
 	std::string print_back(const std::string &info);
 	std::string print_all(const std::string &info);
+	std::string menu_all(const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 
 	std::string read(std::string &input) const;
-	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
+	std::string showEntry(Entry &entry, const std::string &name, int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 	std::string menu(int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 };
 
