@@ -68,7 +68,10 @@ std::string Table::read(std::string &input) const {
 
 // calculate most used themes
 void Table::calcMostUsed() {
-	std::vector<int> themes(data.size());
+	std::vector<int> themes(data.size()); // there can never be more themes than this
+	// if there are 10 items and 5 themes, the last 5 positions of the array are useless but they will never be the max anyway
+	// this just simplifies things
+
 	for (unsigned int i = 0; i < themes.size(); i++) {
 		themes[i] = 0;
 	}
@@ -78,6 +81,7 @@ void Table::calcMostUsed() {
 
 	// this is to find the max, got lazy
 	this->most_used = std::distance(themes.begin(),std::max_element(themes.begin(), themes.end()));
+	printf("most used: %d\n", most_used);
 }
 
 std::string Table::print_back(const std::string &info) {
@@ -109,8 +113,13 @@ std::string Table::showEntry(Entry &entry, const std::string &name, int theme, s
 			{
 				std::string why_is_this_needed = info + "/" + name;
 				std::string back = info + "/"; // 😭😭 I'm in way too deep to change this now, in the future might redo the whole info thing
-				return std::get<SUB_DATA>(entry.data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
-				// this->active_theme = ...
+				std::string res = std::get<SUB_DATA>(entry.data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
+				
+				// this is a very bad hack, have to change. Without it, going into subtable and changing things will update the theme of the table itself but not in the entry it is inside of, since it is lost
+				entry.active_theme = std::get<SUB_DATA>(entry.data).get()->most_used;
+
+				calcMostUsed(); // because we don't know what happened in there
+				return res;
 				break;
 			}
 		case LIST:
