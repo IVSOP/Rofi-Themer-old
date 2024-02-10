@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-#define MESSAGE_STR_SIZE 256
+#define MESSAGE_STR_SIZE 1024
 
 enum MESSAGE_TYPE {
 	READ = 'r',

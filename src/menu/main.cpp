@@ -54,7 +54,8 @@ int main (int argc, char **argv) {
 	write(sockfd, &msg, sizeof(Message));
 
 	OutMessage outmsg;
-	read(sockfd, &outmsg, sizeof(OutMessage));
+	/* ssize_t bread = */ read(sockfd, &outmsg, sizeof(OutMessage));
+	// printf("Received %ld bytes\n", bread);
 	// ugly but has to be done this way, string might have many \0
 	write(STDOUT_FILENO, outmsg.str, outmsg.len);
 

@@ -203,7 +203,7 @@ std::string Entry::print_option(const std::string &name, const std::string &info
 
 // print only func, called only by the table. otherwise, apply and apply list would have teir options changed
 std::string Entry::menu(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const {
-	print_option(name, info + "/" + name, color_icons);
+	return print_option(name, info + "/" + name, color_icons);
 }
 
 // info + "/" + name repeated seems bad, but makes easier to implement 'Back', read Table::menu()

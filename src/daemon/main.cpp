@@ -34,7 +34,7 @@ void reply(const std::string &string, int clientSock) {
 }
 
 void handleMessage(Data &data, const Message &msg, int clientSock) {
-	std::string string = msg.str;
+	std::string string = msg.str; // unecessary copy?
 	switch (msg.type) {
 		case READ:
 			reply(data.read(string), clientSock);

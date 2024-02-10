@@ -52,6 +52,7 @@ std::string Data::menu(std::string &input) {
 		for (unsigned int i = 0; i < this->color_icons.size(); i++) {
 			res += rofi_message("Theme " + std::to_string(i), color_icons[i], std::to_string(i) + "/");
 		}
+		puts("dsakdsakldas");
 		return res;
 	} else {
 		int theme = std::stoi(input.substr(0, pos));

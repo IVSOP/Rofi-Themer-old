@@ -97,12 +97,13 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 	input.erase(0, pos + 1); // 1 is len of delimiter
 
 	if (token.length() == 0) { // show menu of this table
-		// std::string res = "";
-		// for (const auto &entrypair : this->data) { // got lazy iterating values only
-		// 	res += entrypair.second.menu(token, info, color_icons);
-		// }
-		// return res;
-		return "'' not implemented";
+		std::string res = "";
+		for (const auto &entrypair : this->data) { // got lazy iterating values only
+			// printf("Adding %s\n", entrypair.first.c_str());
+			res += entrypair.second.menu(entrypair.first, info, color_icons); // this menu func only displays their name
+		}
+		// write(STDOUT_FILENO, res.c_str(), res.size());
+		return res;
 	} else if (token == "*") { // apply all options on this table
 		return "* not implemented";
 	} else {
