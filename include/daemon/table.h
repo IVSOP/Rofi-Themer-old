@@ -19,6 +19,9 @@ struct Table {
 
 	void calcMostUsed();
 
+	std::string print_back(const std::string &info);
+	std::string print_all(const std::string &info);
+
 	std::string read(std::string &input) const;
 	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
 	std::string menu(int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons);

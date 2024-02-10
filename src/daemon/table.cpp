@@ -80,16 +80,21 @@ void Table::calcMostUsed() {
 	this->most_used = std::distance(themes.begin(),std::max_element(themes.begin(), themes.end()));
 }
 
+std::string Table::print_back(const std::string &info) {
+	const std::string str = "Back";
+	return rofi_message(str, info);
+}
+
+std::string Table::print_all(const std::string &info) {
+	const std::string str = "All";
+	return rofi_message(str, info + "/*");
+}
+
 // info needs to be passed, so that all the tables before it can add things to it, otherwise it would be lost
-// input is the same string but things that were parsed were erased
-// for example:
-// 		input:   rofi/blabla
-//		options: m/1/rofi/blabla
-// and will go into table 'rofi'
+// in the input string that were parsed were erased
 
 // input is string that gets parsed
 // info is accumulator of the path through the data structure to get here
-
 std::string Table::menu(int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons) {
 	// if there is no /, pos will be very big and the token will be the entire input
 	size_t pos = input.find('/');
@@ -97,22 +102,25 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 	input.erase(0, pos + 1); // 1 is len of delimiter
 
 	if (token.length() == 0) { // show menu of this table
-		std::string res = "";
+		std::string res = print_all(info);
 		for (const auto &entrypair : this->data) { // got lazy iterating values only
 			// printf("Adding %s\n", entrypair.first.c_str());
 			res += entrypair.second.menu(entrypair.first, info, color_icons); // this menu func only displays their name
 		}
 		// write(STDOUT_FILENO, res.c_str(), res.size());
+		res += print_back(info);
 		return res;
 	} else if (token == "*") { // apply all options on this table
-		return "* not implemented";
+		return "*(All) not implemented";
 	} else {
 		Entry &entry = this->data.at(token); // TODO error handling if it does not exist
-
 		// this seems very confusing, but tables never alter info, only the entries
 		// this way, for the back option, instead of removing last option, it already does not exist
 		// ex 1/rofi, ou are in the menu for rofi. The back option would have info = 1/. 1/ is already what was passed as info, just copy it
-		std::string rofi_str = entry.menu(token, theme, input, info, color_icons);
+
+		std::string rofi_str = print_all(info);
+		rofi_str += entry.menu(token, theme, input, info, color_icons);
+		rofi_str += print_back(info);
 
 		// since we do not know if things were changed or not, since going into a new menu may or may not result in changes, allways recalculate most used themes
 		calcMostUsed();
