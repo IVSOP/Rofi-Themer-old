@@ -95,11 +95,18 @@ std::string Table::print_all(const std::string &info) {
 
 // input is string that gets parsed
 // info is accumulator of the path through the data structure to get here
-std::string Table::menu(int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons) {
+
+// back_info is a hack to make it easier to get info for 'Back' (egg. info = a/b/c, back = a/b)
+std::string Table::menu(int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
 	// if there is no /, pos will be very big and the token will be the entire input
+	
 	size_t pos = input.find('/');
 	std::string token = input.substr(0, pos);
-	input.erase(0, pos + 1); // 1 is len of delimiter
+	input.erase(0, pos); // 1 is len of delimiter
+	// ugly hack for when no / is found, doing pos + 1 would overflow (at least I whink that's what happened when I tried it)
+	input.erase(0, 1);
+	printf("table received info: '%s'\n", info.c_str());
+
 
 	if (token.length() == 0) { // show menu of this table
 		std::string res = print_all(info);
@@ -108,25 +115,26 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 			res += entrypair.second.menu(entrypair.first, info, color_icons); // this menu func only displays their name
 		}
 		// write(STDOUT_FILENO, res.c_str(), res.size());
-		res += print_back(info);
+		res += print_back(back_info);
 		return res;
 	} else if (token == "*") { // apply all options on this table
 		return "*(All) not implemented";
 	} else {
-		Entry &entry = this->data.at(token); // TODO error handling if it does not exist
-		// this seems very confusing, but tables never alter info, only the entries
-		// this way, for the back option, instead of removing last option, it already does not exist
-		// ex 1/rofi, ou are in the menu for rofi. The back option would have info = 1/. 1/ is already what was passed as info, just copy it
+		try {
+			Entry &entry = this->data.at(token);
 
-		std::string rofi_str = print_all(info);
-		rofi_str += entry.menu(token, theme, input, info, color_icons);
-		rofi_str += print_back(info);
+			std::string rofi_str = entry.menu(token, theme, input, info, color_icons);
 
-		// since we do not know if things were changed or not, since going into a new menu may or may not result in changes, allways recalculate most used themes
-		calcMostUsed();
+			// since we do not know if things were changed or not, since going into a new menu may or may not result in changes, allways recalculate most used themes
+			calcMostUsed();
 
-		// rofi_active();
+			// rofi_active();
 
-		return rofi_str;
+			return rofi_str;
+		} catch (const std::out_of_range& e) {
+			printf("'%s' does not exist in the map\n", token);
+			exit(EXIT_FAILURE);
+		}
+		
 	}
 }

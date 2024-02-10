@@ -218,8 +218,13 @@ std::string Entry::menu(const std::string &name, int theme, std::string &input, 
 			return print_option(name, info + "/" + name, color_icons);
 			break;
 		case SUB: // need to go into subtable
-			return "sub";
-			break;
+			{
+				std::string why_is_this_needed = info + "/" + name;
+				std::string back = info + "/"; // 😭😭 I'm in way too deep to change this now, in the future might redo the whole info thing
+				return std::get<SUB_DATA>(this->data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
+				// this->active_theme = ...
+				break;
+			}
 		case LIST:
 			return "list";
 			break;

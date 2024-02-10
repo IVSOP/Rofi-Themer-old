@@ -52,12 +52,12 @@ std::string Data::menu(std::string &input) {
 		for (unsigned int i = 0; i < this->color_icons.size(); i++) {
 			res += rofi_message("Theme " + std::to_string(i), color_icons[i], std::to_string(i) + "/");
 		}
-		puts("dsakdsakldas");
 		return res;
 	} else {
 		int theme = std::stoi(input.substr(0, pos));
 		std::string options = input.substr(pos + 1); // from pos + 1 to the end
 		std::string themestr = std::to_string(theme);
-		return this->main_table.menu(theme, options, themestr, this->color_icons);
+		std::string back = "";
+		return this->main_table.menu(theme, options, themestr, back, this->color_icons);
 	}
 }

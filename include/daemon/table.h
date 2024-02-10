@@ -24,7 +24,7 @@ struct Table {
 
 	std::string read(std::string &input) const;
 	// sort of a bandaid fix, not elegant for this to receive color_icons, gets passed down recursively all the time
-	std::string menu(int theme, std::string &input, std::string &info, const std::vector<std::string> &color_icons);
+	std::string menu(int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 };
 
 #endif
