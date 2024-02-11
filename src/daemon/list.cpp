@@ -80,6 +80,9 @@ std::string List::menuOptions(int theme, int current_theme, const std::string &i
 		}
 	}
 	res += print_back(back_info);
+	if (theme == current_theme) {
+		res += getActive();
+	}
 	return res;
 }
 
@@ -98,4 +101,8 @@ std::string List::menu(int theme, int *current_theme, std::string &input, std::s
 // aplies first option by default (even if it doesn't exist??????????????)
 void List::applyAll(int theme) {
 	this->selected_option = 0;
+}
+
+std::string List::getActive() const {
+	return rofi_active(this->selected_option);
 }

@@ -29,6 +29,8 @@ public:
 
 	void applyAll(int theme);
 
+	std::string getActive() const;
+
 private:
 	void parseList(std::string list); // NOT a reference!!! afraid the erase() would mess everything up
 

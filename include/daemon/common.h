@@ -21,6 +21,8 @@ enum TYPE {
 #define SUB_DATA std::unique_ptr<Table> // case of subtable is represented as a new table. pointer due to circular dependency
 #define LIST_DATA std::unique_ptr<List> // case of being a list, cannot be a table unfortunately. could be object and not pointer, but this makes it consistent
 
+std::string rofi_active(int active);
+std::string rofi_active(const std::vector<int> &vec);
 std::string rofi_message(const std::string &text, const std::string &info); // no icon
 std::string rofi_message(const std::string &text, const std::string &icon, const std::string &info);
 
