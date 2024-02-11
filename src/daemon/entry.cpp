@@ -60,13 +60,8 @@ void Entry::parseApply(std::string &line) {
 }
 
 void Entry::parseSub(const std::string &name, std::string &line) {
-	// got lazy moving this to main function
-	size_t pos = line.find(';');
-	// if pos == std::string::npos.....
-	this->active_theme = std::stoi(line);
-	line.erase(0, pos + 1);
-
-	this->data.emplace<std::unique_ptr<Table>>(std::make_unique<Table>("data/" + name + ".tb"));
+	this->data.emplace<SUB_DATA>(std::make_unique<Table>("data/" + name + ".tb"));
+	this->active_theme = std::get<SUB_DATA>(this->data).get()->calcMostUsed();
 }
 
 void Entry::parseList(std::string &line, bool show_pictures) {
@@ -76,7 +71,7 @@ void Entry::parseList(std::string &line, bool show_pictures) {
 	this->active_theme = std::stoi(line);
 	line.erase(0, pos + 1);
 
-	this->data.emplace<std::unique_ptr<List>>(std::make_unique<List>(line, show_pictures));
+	this->data.emplace<LIST_DATA>(std::make_unique<List>(line, show_pictures));
 }
 
 // bad at naming things, parses [....] into vec of strings
