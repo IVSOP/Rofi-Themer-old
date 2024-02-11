@@ -205,3 +205,26 @@ std::string Entry::print_option(const std::string &name, const std::string &info
 std::string Entry::menu(const std::string &name, const std::string &info, const std::vector<std::string> &color_icons) const {
 	return print_option(name, info + "/" + name, color_icons);
 }
+
+void Entry::applyAll(int theme) {
+	this->active_theme = theme;
+	switch (this->type) { // not making a jump table due to poor readability, I will assume compiler does it for me
+		case APPLY:
+			break;
+
+		case APPLY_LIST:
+			break;
+
+		case SUB:
+			std::get<SUB_DATA>(this->data).get()->applyAll(theme);
+			break;
+
+		case LIST:
+			std::get<LIST_DATA>(this->data).get()->applyAll(theme);
+			break;
+
+		case LIST_PICTURE:
+			std::get<LIST_DATA>(this->data).get()->applyAll(theme);
+			break;
+	}
+}

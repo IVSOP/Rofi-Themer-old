@@ -90,7 +90,12 @@ std::string List::menu(int theme, int *current_theme, std::string &input, std::s
 		// option chosen
 		this->selected_option = std::stoi(input);
 		*current_theme = theme;
-		printf("Current theme is now %d\n", *current_theme);
+		// printf("Current theme is now %d\n", *current_theme);
 		return menuOptions(theme, *current_theme, info, back_info, color_icons);
 	}
+}
+
+// aplies first option by default (even if it doesn't exist??????????????)
+void List::applyAll(int theme) {
+	this->selected_option = 0;
 }

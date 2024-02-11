@@ -19,6 +19,7 @@ struct Table {
 
 	void calcMostUsed();
 
+	void applyAll(int theme);
 	std::string menu_all(const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 
 	std::string read(std::string &input) const;

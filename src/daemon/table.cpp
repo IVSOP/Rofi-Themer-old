@@ -147,6 +147,13 @@ std::string Table::menu_all(const std::string &info, const std::string &back_inf
 	return res;
 }
 
+void Table::applyAll(int theme) {
+	for (auto &entrypair : this->data) { // got lazy iterating values only
+		entrypair.second.applyAll(theme);
+	}
+	this->most_used = theme;
+}
+
 // info needs to be passed, so that all the tables before it can add things to it, otherwise it would be lost
 // in the input string that were parsed were erased
 
@@ -168,7 +175,8 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 	if (token.length() == 0) { // show menu of this table
 		return menu_all(info, back_info, color_icons);
 	} else if (token == "*") { // apply all options on this table
-		return "*(All) not implemented";
+		applyAll(theme);
+		return menu_all(info, back_info, color_icons);
 	} else {
 		try {
 			Entry &entry = this->data.at(token);

@@ -27,6 +27,8 @@ public:
 	// it is a pointer, ugly hack to let the Table that called this know that the theme has been changed since an option was selected
 	std::string menu(int theme, int *current_theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 
+	void applyAll(int theme);
+
 private:
 	void parseList(std::string list); // NOT a reference!!! afraid the erase() would mess everything up
 
