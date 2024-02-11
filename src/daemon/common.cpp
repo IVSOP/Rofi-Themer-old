@@ -17,3 +17,13 @@ std::string rofi_message(const std::string &text, const std::string &icon, const
 		"icon" + ESCAPE_SEP + icon + "\n";
 	// missing active[]!!!!!!!!!!!!!!!!!!
 }
+
+std::string print_back(const std::string &info) {
+	const std::string str = "Back";
+	return rofi_message(str, info);
+}
+
+std::string print_all(const std::string &info) {
+	const std::string str = "All";
+	return rofi_message(str, info + "/*");
+}

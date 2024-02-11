@@ -23,8 +23,14 @@ public:
 
 	std::string read(int active_theme) const; // needs theme because it does not know it itself
 
+	// current theme needed because only the entry that wraps around the List knows it
+	// it is a pointer, ugly hack to let the Table that called this know that the theme has been changed since an option was selected
+	std::string menu(int theme, int *current_theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
+
 private:
 	void parseList(std::string list); // NOT a reference!!! afraid the erase() would mess everything up
+
+	std::string menuOptions(int theme, int current_theme, const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 };
 
 

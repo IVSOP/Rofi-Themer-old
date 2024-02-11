@@ -19,8 +19,6 @@ struct Table {
 
 	void calcMostUsed();
 
-	std::string print_back(const std::string &info);
-	std::string print_all(const std::string &info);
 	std::string menu_all(const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 
 	std::string read(std::string &input) const;

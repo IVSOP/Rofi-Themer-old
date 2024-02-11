@@ -84,16 +84,6 @@ void Table::calcMostUsed() {
 	printf("most used: %d\n", most_used);
 }
 
-std::string Table::print_back(const std::string &info) {
-	const std::string str = "Back";
-	return rofi_message(str, info);
-}
-
-std::string Table::print_all(const std::string &info) {
-	const std::string str = "All";
-	return rofi_message(str, info + "/*");
-}
-
 // info + "/" + name repeated seems bad, but makes easier to implement 'Back'
 // very unfortunate that it had to be done this way, for example applying an option needs to print the parent table, it would be a mess if this was controled by entries themselves and not parent table
 // the readonly function is still there though
@@ -123,12 +113,23 @@ std::string Table::showEntry(Entry &entry, const std::string &name, int theme, s
 				break;
 			}
 		case LIST:
-			return "list";
-			break;
+			{
+				std::string why_is_this_needed = info + "/" + name;
+				std::string back = info + "/";
+				std::string res = std::get<LIST_DATA>(entry.data).get()->menu(theme, &entry.active_theme, input, why_is_this_needed, back, color_icons);
+				calcMostUsed();
+				return res;
+				break;
+			}
 		case LIST_PICTURE:
-			return "pics";
-			break;
-
+			{
+				std::string why_is_this_needed = info + "/" + name;
+				std::string back = info + "/";
+				std::string res = std::get<LIST_DATA>(entry.data).get()->menu(theme, &entry.active_theme, input, why_is_this_needed, back, color_icons);
+				calcMostUsed();
+				return res;
+				break;
+			}
 		default: // I will assume the type can never be anything else ever, but this way compiler shuts up
 			return "error";
 	}

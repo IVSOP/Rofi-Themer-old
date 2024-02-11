@@ -31,6 +31,7 @@ void reply(const std::string &string, int clientSock) {
 		print_error("Error writing data"); // stdout and stderr will be closed but whatever
 		exit(EXIT_FAILURE);
 	}
+	// write(STDOUT_FILENO, &msg, sizeof(OutMessage));
 }
 
 void handleMessage(Data &data, const Message &msg, int clientSock) {

@@ -1,7 +1,7 @@
 #include "list.h"
 
 void List::parseList(std::string list) {
-	// printf("got token %s\n", list.c_str());
+	// printf("got list %s\n\n", list.c_str());
 	size_t pos;
 	std::string token;
 	std::vector<std::string> vec;
@@ -12,6 +12,8 @@ void List::parseList(std::string list) {
 		if (token.length() > 0) vec.push_back(token);
 		list.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
+
+
 
 	} while (pos != std::string::npos);
 
@@ -28,14 +30,16 @@ List::List(std::string &line, bool show_pictures)
 
 	// separate all [lists], parse them individually
 	start = line.find('[');
+	line.erase(0, start + 1); // so that getting end is correct
 	size_t end = line.find(']');
 	std::string token;
 	while (start != std::string::npos) {
-		token = line.substr(start + 1, end - 2); // why did -1 not work wtf I give up
+		token = line.substr(0, end); // 0 since start was erased
 		parseList(token);
 
 		line.erase(0, end + 1);
-		start = line.find('['),
+		start = line.find('[');
+		line.erase(0, start + 1); // so that getting end is correct
 		end = line.find(']');
 	}
 }
@@ -55,4 +59,38 @@ void List::print(int depth_level) {
 std::string List::read(int active_theme) const {
 	const std::vector<std::string> &vec = this->data[active_theme];
 	return vec[this->selected_option] + "\n";
+}
+
+std::string List::menuOptions(int theme, int current_theme, const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
+	std::string res = "";
+	if (this->show_pictures == true) {
+		// icons are the data itself
+		int i = 0;
+		for (const std::string &str : this->data[theme]) {
+			const std::string num_info = info + "/" + std::to_string(i);
+			res += rofi_message(str, str, num_info);
+			i ++;
+		}
+	} else {
+		int i = 0;
+		for (const std::string &str : this->data[theme]) {
+			const std::string num_info = info + "/" + std::to_string(i);
+			res += rofi_message(str, color_icons[current_theme], num_info);
+			i ++;
+		}
+	}
+	res += print_back(back_info);
+	return res;
+}
+
+std::string List::menu(int theme, int *current_theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
+	if (input.length() == 0) { // meh but it works
+		return menuOptions(theme, *current_theme, info, back_info, color_icons);
+	} else {
+		// option chosen
+		this->selected_option = std::stoi(input);
+		*current_theme = theme;
+		printf("Current theme is now %d\n", *current_theme);
+		return menuOptions(theme, *current_theme, info, back_info, color_icons);
+	}
 }
