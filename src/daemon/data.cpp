@@ -47,12 +47,15 @@ std::string Data::read(std::string &input) const {
 std::string Data::menu(std::string &input) {
 	size_t pos = input.find('/');
 	if (pos == std::string::npos) { // show main menu
+		std::vector<int> themes = this->main_table.getThemes(this->color_icons.size());
 		std::string res = "";
 		// display main menu. done here and not in the table itself since it is an exception that can only happen at the start
 		for (unsigned int i = 0; i < this->color_icons.size(); i++) {
-			res += rofi_message("Theme " + std::to_string(i), color_icons[i], std::to_string(i) + "/");
+			res += rofi_message("Theme " + std::to_string(i) + "(" + std::to_string(themes[i]) + "/" + std::to_string(this->main_table.data.size()) + ")", 
+				this->color_icons[i], std::to_string(i) + "/");
 		}
-		return res;
+		return res + rofi_active(this->main_table.calcMostUsed()); // no need for calcMostUsed(), but whatever. Table does not know its theme directly, but there is no Entry to wrap it here
+		// TODO got lazy, could use themes vector to calculate this here
 	} else {
 		int theme = std::stoi(input.substr(0, pos));
 		std::string options = input.substr(pos + 1); // from pos + 1 to the end

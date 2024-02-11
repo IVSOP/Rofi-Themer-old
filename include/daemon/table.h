@@ -16,7 +16,8 @@ struct Table {
 
 	void print(int depth_level);
 
-	int calcMostUsed();
+	int calcMostUsed() const;
+	std::vector<int> getThemes(int numThemes) const;
 
 	void applyAll(int theme);
 	std::string getActive(int theme);

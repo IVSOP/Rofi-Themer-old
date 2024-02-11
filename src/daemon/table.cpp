@@ -65,7 +65,7 @@ std::string Table::read(std::string &input) const {
 }
 
 // calculate most used themes
-int Table::calcMostUsed() {
+int Table::calcMostUsed() const {
 	std::vector<int> themes(data.size()); // there can never be more themes than this
 	// if there are 10 items and 5 themes, the last 5 positions of the array are useless but they will never be the max anyway
 	// this just simplifies things
@@ -79,6 +79,19 @@ int Table::calcMostUsed() {
 
 	// this is to find the max, got lazy
 	return std::distance(themes.begin(),std::max_element(themes.begin(), themes.end()));
+}
+
+std::vector<int> Table::getThemes(int numThemes) const {
+	std::vector<int> themes(numThemes);
+
+	for (unsigned int i = 0; i < themes.size(); i++) {
+		themes[i] = 0;
+	}
+	for (const auto &entrypair : this->data) {
+		themes[entrypair.second.active_theme] += 1; // if not set, will be -1, segfault prob
+	}
+
+	return themes;
 }
 
 // info + "/" + name repeated seems bad, but makes easier to implement 'Back'
