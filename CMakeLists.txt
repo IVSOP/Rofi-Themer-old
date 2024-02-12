@@ -38,3 +38,12 @@ target_include_directories(Rofi-Themer-menu
 		PUBLIC include/common        
 		PUBLIC include/menu
 )
+
+add_executable(Rofi-Themer-read
+        src/read/main.cpp
+)
+
+target_include_directories(Rofi-Themer-read
+		PUBLIC include/common        
+		PUBLIC include/read
+)

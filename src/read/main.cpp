@@ -23,9 +23,14 @@
 
 int main (int argc, char **argv) {
 
+	if (argc < 2) {
+		print_error("Insuficient arguments: need query to send")
+		return EXIT_FAILURE;
+	}
+
 	int sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sockfd < 0) {
-        puts("Error opening socket");
+        print_error("Error opening socket");
         return EXIT_FAILURE;
     }
 
@@ -38,26 +43,21 @@ int main (int argc, char **argv) {
 	socklen_t data_len = strlen(server_addr.sun_path) + sizeof(server_addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
 	if (connect(sockfd, (struct sockaddr *)&server_addr, data_len) < 0) {
-        puts("Error connecting to daemon");
+        print_error("Error connecting to daemon");
         return EXIT_FAILURE;
     }
 
 	Message msg;
-	msg.type = MENU;
+	msg.type = READ;
 	// strncpy(msg.str, QUERY, MESSAGE_STR_SIZE); wrong, query is in the message type and not as a string
-
-	char *info = getenv("ROFI_INFO");
-	if (info != nullptr) {
-		strncpy(msg.str, info, MESSAGE_STR_SIZE);
-	}
-
+	strncpy(msg.str, argv[1], MESSAGE_STR_SIZE);
 
 	write(sockfd, &msg, sizeof(Message));
 
 	OutMessage outmsg;
 	/* ssize_t bread = */ read(sockfd, &outmsg, sizeof(OutMessage));
 	// printf("Received %ld bytes\n", bread);
-	// ugly but has to be done this way, string might have many \0
+	// eh could be a print but whatever
 	write(STDOUT_FILENO, outmsg.str, outmsg.len);
 
 
