@@ -55,12 +55,16 @@ std::string Table::read(std::string &input) const {
 		}
 		return res;
 	} else {
-		const Entry &entry = this->data.at(name);
-		
-		// catch the exception.................
-		
-		input.erase(0, pos + 1); // 1 is len of delimiter
-		return entry.read(input);
+		try {
+			const Entry &entry = this->data.at(name);
+						
+			input.erase(0, pos + 1); // 1 is len of delimiter
+			return entry.read(input);
+
+		} catch (const std::out_of_range& e) {
+			printf("'%s' does not exist in the map\n", name);
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 

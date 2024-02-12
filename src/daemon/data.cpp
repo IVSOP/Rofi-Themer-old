@@ -38,9 +38,6 @@ void Data::print() {
 }
 
 std::string Data::read(std::string &input) const {
-	size_t pos = input.find('/');
-	input.erase(0, pos + 1);
-
 	return this->main_table.read(input);
 }
 

@@ -10,7 +10,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 #SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 if(DEFINED SOCK_PATH)
-	add_definitions(-DSOCK_PATH=${SOCK_PATH})
+	add_definitions(-DSOCK_PATH="${SOCK_PATH}")
 else()
     message(STATUS "MY_DEFINE_VALUE is not set. You can set it using: cmake -DMY_DEFINE_VALUE=<value> <path_to_source>")
 endif()
