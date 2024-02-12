@@ -17,14 +17,16 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-#define SOCK_PATH "build/Themer-socket" // change this as needed
+#ifndef SOCK_PATH
+	#define SOCK_PATH "build/Themer-socket"
+#endif
 #define QUERY "m/"
 
 int main (int argc, char **argv) {
 
 	int sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sockfd < 0) {
-        print_error("Error creating socket\n");
+        puts("Error opening socket");
         return EXIT_FAILURE;
     }
 
@@ -37,7 +39,7 @@ int main (int argc, char **argv) {
 	socklen_t data_len = strlen(server_addr.sun_path) + sizeof(server_addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
 	if (connect(sockfd, (struct sockaddr *)&server_addr, data_len) < 0) {
-        print_error("Error connecting to server\n");
+        puts("Error connecting to daemon");
         return EXIT_FAILURE;
     }
 

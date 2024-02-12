@@ -20,6 +20,11 @@
 
 #define MAX_CONN 1
 
+
+#ifndef SOCK_PATH
+	#define SOCK_PATH "build/Themer-socket"
+#endif
+
 // wraps output in message just for ease of use, might change, don't really like this
 void reply(const std::string &string, int clientSock) {
 	OutMessage msg;
@@ -57,11 +62,6 @@ int main (int argc, char **argv) {
 		fprintf(stderr, "Insuficient arguments: need dataset path\n");
 		return EXIT_FAILURE;
 	}
-	if (argc < 3) {
-		fprintf(stderr, "Insuficient arguments: need path to dir to create socket\n");
-		return EXIT_FAILURE;
-	}
-
 	//////////////////////////////////////////////// creating unix socket
 
 	// Create a Unix domain socket
@@ -75,8 +75,7 @@ int main (int argc, char **argv) {
     struct sockaddr_un addr;
     addr.sun_family = AF_UNIX;
 
-	strncpy(addr.sun_path, argv[2], sizeof(addr.sun_path) - 1);
-    strncpy(addr.sun_path + strlen(argv[2]), "Themer-socket", sizeof(addr.sun_path) - 1);
+    strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) - 1);
 	unlink(addr.sun_path);
 	socklen_t len = strlen(addr.sun_path) + sizeof(addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
