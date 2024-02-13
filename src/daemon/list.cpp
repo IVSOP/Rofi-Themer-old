@@ -9,7 +9,7 @@ void List::parseList(std::string list) {
 	do {
 		pos = list.find(';');
 		token = list.substr(0, pos);
-		if (token.length() > 0) vec.push_back(token);
+		if (token.length() > 0) vec.push_back(token); // pretty sure this never happens, why would you have empty values in a list
 		list.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
 
@@ -33,6 +33,7 @@ List::List(std::string &line, bool show_pictures)
 	line.erase(0, start + 1); // so that getting end is correct
 	size_t end = line.find(']');
 	std::string token;
+
 	while (start != std::string::npos) {
 		token = line.substr(0, end); // 0 since start was erased
 		parseList(token);

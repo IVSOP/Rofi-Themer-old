@@ -51,7 +51,11 @@ void Entry::parseApply(std::string &line) {
 	do {
 		pos = line.find(';');
 		token = line.substr(0, pos);
-		if (token.length() > 0) vec.push_back(token);
+		if (token.length() > 0) {
+			vec.push_back(token);
+		} else {
+			vec.emplace_back(""); // for simplicity, write empty string when no value is found
+		}
 		line.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
 	} while (pos != std::string::npos);
@@ -81,7 +85,11 @@ void parseApplyListAux(std::string &list, std::vector<std::string> &vec) {
 	do {
 		pos = list.find(';');
 		token = list.substr(0, pos);
-		if (token.length() > 0) vec.push_back(token);
+		if (token.length() > 0) {
+			vec.push_back(token);
+		} else {
+			vec.emplace_back(""); // for simplicity, write empty string when no value is found
+		}
 		list.erase(0, pos + 1); // 1 is len of delimiter
 		// puts(token.c_str());
 	} while (pos != std::string::npos);
