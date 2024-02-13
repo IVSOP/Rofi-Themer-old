@@ -106,39 +106,39 @@ int main (int argc, char **argv) {
 
 	//////////////////////////////////////////////// creating daemon
 
-	pid_t pid, sid;
+	// pid_t pid, sid;
 
-    // Fork the process
-    pid = fork();
+    // // Fork the process
+    // pid = fork();
 
-    if (pid < 0) {
-	// error
-        exit(EXIT_FAILURE);
-    }
+    // if (pid < 0) {
+	// // error
+    //     exit(EXIT_FAILURE);
+    // }
 
-    if (pid > 0) {
-        // Parent process
-        exit(EXIT_SUCCESS);
-    }
+    // if (pid > 0) {
+    //     // Parent process
+    //     exit(EXIT_SUCCESS);
+    // }
 
-    // Set file mode creation mask to 0
-    umask(0);
+    // // Set file mode creation mask to 0
+    // umask(0);
 
-    // Create a new session
-    sid = setsid();
-    if (sid < 0) {
-        exit(EXIT_FAILURE);
-    }
+    // // Create a new session
+    // sid = setsid();
+    // if (sid < 0) {
+    //     exit(EXIT_FAILURE);
+    // }
 
-    // Change the working directory to root
-    if (chdir("/") < 0) {
-        exit(EXIT_FAILURE);
-    }
+    // // Change the working directory to root
+    // if (chdir("/") < 0) {
+    //     exit(EXIT_FAILURE);
+    // }
 
-    // Close standard file descriptors
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
+    // // Close standard file descriptors
+    // close(STDIN_FILENO);
+    // close(STDOUT_FILENO);
+    // close(STDERR_FILENO);
 
 	//////////////////////////////////////////////// listen for requests on the socket
 

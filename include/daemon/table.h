@@ -11,12 +11,12 @@ struct Table {
 	std::map<std::string, Entry> data; // the actual data in the table, looked up by string
 
 	Table() = default;
-	Table(const std::string &path);
+	Table(const std::string &path, const std::string &dataDir, int numThemes); // paths are all absolute, dataDir is used to parse subtables (was a bandaid fix, will work fine)
 	~Table() = default;
 
 	void print(int depth_level);
 
-	int calcMostUsed() const;
+	int calcMostUsed(int numThemes) const;
 	std::vector<int> getThemes(int numThemes) const;
 
 	void applyAll(int theme);

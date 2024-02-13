@@ -3,7 +3,7 @@
 #include "errors.h"
 #include <algorithm>
 
-Table::Table(const std::string &path) {
+Table::Table(const std::string &path, const std::string &dataDir, int numThemes) {
 	std::ifstream file(path);
 	if (!file.is_open()) {
 		print_error("Error opening file");
@@ -24,7 +24,7 @@ Table::Table(const std::string &path) {
 		this->data.emplace(
 			::std::piecewise_construct, // special to enable forwarding
 			::std::forward_as_tuple(name), // arguments for key constructor
-			::std::forward_as_tuple(name, data) // arguments for value constructor
+			::std::forward_as_tuple(name, data, dataDir, numThemes) // arguments for value constructor
 		);
 		// this->data.emplace(name, Entry(name, data)); // error wtf???
     }
@@ -69,10 +69,8 @@ std::string Table::read(std::string &input) const {
 }
 
 // calculate most used themes
-int Table::calcMostUsed() const {
-	std::vector<int> themes(data.size()); // there can never be more themes than this
-	// if there are 10 items and 5 themes, the last 5 positions of the array are useless but they will never be the max anyway
-	// this just simplifies things
+int Table::calcMostUsed(int numThemes) const {
+	std::vector<int> themes(numThemes);
 
 	for (unsigned int i = 0; i < themes.size(); i++) {
 		themes[i] = 0;
@@ -80,9 +78,9 @@ int Table::calcMostUsed() const {
 	for (const auto &entrypair : this->data) {
 		themes[entrypair.second.active_theme] += 1; // if not set, will be -1, segfault prob
 	}
-
+	
 	// this is to find the max, got lazy
-	return std::distance(themes.begin(),std::max_element(themes.begin(), themes.end()));
+	return std::distance(themes.begin(), std::max_element(themes.begin(), themes.end()));
 }
 
 std::vector<int> Table::getThemes(int numThemes) const {
@@ -118,7 +116,7 @@ std::string Table::showEntry(Entry &entry, const std::string &name, int theme, s
 				std::string res = std::get<SUB_DATA>(entry.data).get()->menu(theme, input, why_is_this_needed, back, color_icons);
 				
 				// this is a very bad hack, have to change. Without it, going into subtable and changing things will update the theme of the table itself but not in the entry it is inside of, since it is lost
-				entry.active_theme = std::get<SUB_DATA>(entry.data).get()->calcMostUsed();
+				entry.active_theme = std::get<SUB_DATA>(entry.data).get()->calcMostUsed(color_icons.size());
 
 				return res;
 				break;

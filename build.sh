@@ -12,9 +12,11 @@ then # do not change socket path
 	if ! make -j$(nproc) -C $DIR
 	then
 		printf ">> build failed\n"
+		exit 1
 	fi
 	else
 		printf ">> configure failed\n"
+		exit 1
 	fi
 
 else
@@ -24,9 +26,11 @@ else
 		if ! make -j$(nproc) -C $DIR
 		then
 			printf ">> build failed\n"
+			exit 1
 		fi
 	else
 		printf ">> configure failed\n"
+		exit 1
 	fi
 
 fi

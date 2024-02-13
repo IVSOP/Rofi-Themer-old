@@ -2,7 +2,7 @@
 #include "table.h"
 #include "errors.h"
 
-Entry::Entry(const std::string &name, std::string &line) {
+Entry::Entry(const std::string &name, std::string &line, const std::string &dataDir, int numThemes) {
 	// first is the type, this determines what parsing will be done
 	size_t pos = line.find(';');
 	std::string typestr = line.substr(0, pos);
@@ -19,7 +19,7 @@ Entry::Entry(const std::string &name, std::string &line) {
 		parseApplyList(data);
 	} else if (typestr == "sub") {
 		this->type = SUB;
-		parseSub(name, data);
+		parseSub(name, data, dataDir, numThemes);
 	} else if (typestr == "list") {
 		this->type = LIST;
 		parseList(data, false);
@@ -59,9 +59,9 @@ void Entry::parseApply(std::string &line) {
 	this->data = vec;
 }
 
-void Entry::parseSub(const std::string &name, std::string &line) {
-	this->data.emplace<SUB_DATA>(std::make_unique<Table>("data/" + name + ".tb"));
-	this->active_theme = std::get<SUB_DATA>(this->data).get()->calcMostUsed();
+void Entry::parseSub(const std::string &name, std::string &line, const std::string dataDir, int numThemes) {
+	this->data.emplace<SUB_DATA>(std::make_unique<Table>(dataDir + name + ".tb", dataDir, numThemes));
+	this->active_theme = std::get<SUB_DATA>(this->data).get()->calcMostUsed(numThemes);
 }
 
 void Entry::parseList(std::string &line, bool show_pictures) {

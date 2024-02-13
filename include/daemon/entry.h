@@ -20,12 +20,12 @@ struct Entry {
 	> data;
 	int active_theme; // theme selected as active for this entry
 
-	Entry(const std::string &name, std::string &line); // receives line, parses it
+	Entry(const std::string &name, std::string &line, const std::string &dataDir, int numThemes); // receives line, parses it
 	Entry() = default;
 	~Entry() = default;
 	void parseApply(std::string &line);
 	void parseApplyList(std::string &line);
-	void parseSub(const std::string &name, std::string &line);
+	void parseSub(const std::string &name, std::string &line, const std::string dataDir, int numThemes);
 	void parseList(std::string &line, bool show_pictures);
 
 	void print(int depth_level) const;

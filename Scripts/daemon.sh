@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./build/Rofi-Themer-daemon $1 $2
+cd $HOME/Desktop/Rofi-Themer
+
+./build/Rofi-Themer-daemon $1

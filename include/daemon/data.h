@@ -13,7 +13,7 @@ struct Data {
 
 	Data(const std::string &dir);
 
-	void parseColors(const std::string &path);
+	std::vector<std::string> parseColors(const std::string &path);
 	void print();
 	std::string read(std::string &input) const;
 	std::string menu(std::string &input);

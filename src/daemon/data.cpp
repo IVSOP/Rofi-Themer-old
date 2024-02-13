@@ -3,12 +3,13 @@
 #include "errors.h"
 
 Data::Data(const std::string &dir)
-: color_icons(), main_table(dir + "main.tb")
-{
-	parseColors(dir + "color-icons");
-}
+: color_icons(parseColors(dir + "color-icons")),
+  main_table(dir + "main.tb", dir, this->color_icons.size())
+{ }
 
-void Data::parseColors(const std::string &path) {
+std::vector<std::string> Data::parseColors(const std::string &path) {
+	std::vector<std::string> vec;
+
 	std::ifstream file(path);
 	if (!file.is_open()) {
 		print_error("Error opening file");
@@ -20,11 +21,13 @@ void Data::parseColors(const std::string &path) {
     while (std::getline(file, line)) {
 		// ignore comments, only valid at the start of the line for now
 		// if (line.compare(0, delim.length(), delim) != 0) {
-        	this->color_icons.emplace_back(line);
+        	vec.emplace_back(line);
 		// } did not implement this, when files get overwritten it all goes away
     }
 
 	file.close();
+
+	return vec;
 }
 
 void Data::print() {
@@ -51,7 +54,7 @@ std::string Data::menu(std::string &input) {
 			res += rofi_message("Theme " + std::to_string(i) + "(" + std::to_string(themes[i]) + "/" + std::to_string(this->main_table.data.size()) + ")", 
 				this->color_icons[i], std::to_string(i) + "/");
 		}
-		return res + rofi_active(this->main_table.calcMostUsed()); // no need for calcMostUsed(), but whatever. Table does not know its theme directly, but there is no Entry to wrap it here
+		return res + rofi_active(this->main_table.calcMostUsed(this->color_icons.size())); // no need for calcMostUsed(), but whatever. Table does not know its theme directly, but there is no Entry to wrap it here
 		// TODO got lazy, could use themes vector to calculate this here
 	} else {
 		int theme = std::stoi(input.substr(0, pos));
