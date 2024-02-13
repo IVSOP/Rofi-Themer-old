@@ -6,7 +6,6 @@ Rofi-Themer makes it easy to achieve even higher ricing levels by enabling you t
 
 At its core, it is just a [rofi script](https://davatorium.github.io/rofi/1.7.5/rofi-script.5/), but was not done in shell due to its complexity.
 
-
 https://github.com/IVSOP/Rofi-Themer/assets/108223142/06f85920-b04f-4bfa-a0c8-e7a3df8ebffe
 
 *******
@@ -16,7 +15,7 @@ https://github.com/IVSOP/Rofi-Themer/assets/108223142/06f85920-b04f-4bfa-a0c8-e7
 - [Example usage](#Example_usage)
 *******
 
-There an example dataset provided in data/, which I will use for all examples
+There is an example dataset provided in data/, which I will use for all examples
 
 <div id="Compiling"/>
 
@@ -72,7 +71,7 @@ For now the parsing is very limited, whitespace is not ignored and there are no 
 
 ### apply:
 
-Means selecting this option imediately applies the theme to it. It is the simplest, and you can think of it as the base option.
+Means selecting this option immediately applies the theme to it. It is the simplest, and you can think of it as the base option.
 
 Syntax: `entry_name;apply;number of currently selected theme;option for theme 0; option for theme 1;...`
 
@@ -92,7 +91,7 @@ Recurse into a subtable. The table is in a new file.
 
 Syntax: `entry_name;sub`
 
-The parser will look for a file `<data folder>/<entry_name>.tb` in order to parse it.
+A file `<data folder>/<entry_name>.tb` must exist, to be parsed into the new table.
 
 ### list:
 
@@ -113,7 +112,7 @@ Syntax: same as above, but `list_picture` instead of `list`
 
 #### Empty entries:
 
-To leave something blank, use ;; or ;[]; in the case of lists. For now I do not consider if they are empty or not, the parser just skips them
+To leave something blank, use ;; or ;[]; in the case of lists. Be careful though, for now I allow applying empty options, and reading from them will (probably) result in "" at best, or a crash at worst.
 
 *******
 
@@ -125,13 +124,13 @@ The way I use this is just to store symlinks that point to the config files of a
 
 I use i3, so in the config file(s), I have to first execute the daemon, passing in the path do the data folder:
 
-```bash
+```
 exec --no-startup-id $HOME/Desktop/Rofi-Themer/Scripts/daemon.sh $HOME/Desktop/Rofi-Themer/data/
 ```
 
 I also bind Win+Menu to open up the menu:
 
-```bash
+```
 bindsym $mod+Menu exec --no-startup-id $HOME/Desktop/Rofi-Themer/Scripts/menu.sh
 ```
 
