@@ -31,6 +31,8 @@ public:
 
 	std::string getActive() const;
 
+	bool hasDataFor(int theme) const;
+
 private:
 	void parseList(std::string list); // NOT a reference!!! afraid the erase() would mess everything up
 

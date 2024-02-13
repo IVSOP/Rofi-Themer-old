@@ -112,7 +112,7 @@ Syntax: same as above, but `list_picture` instead of `list`
 
 #### Empty entries:
 
-To leave something blank, use ;; or ;[]; in the case of lists. Be careful though, for now I allow applying empty options, and reading from them will (probably) result in "" at best, or a crash at worst.
+To leave something blank, use ;; or ;[]; in the case of lists. Empty options cannot be applied.
 
 *******
 

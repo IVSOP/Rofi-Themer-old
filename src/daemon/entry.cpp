@@ -209,25 +209,57 @@ std::string Entry::menu(const std::string &name, const std::string &info, const 
 	return print_option(name, info + "/" + name, color_icons);
 }
 
-void Entry::applyAll(int theme) {
-	this->active_theme = theme;
+void Entry::applyAll(int theme, int numThemes) {
 	switch (this->type) { // not making a jump table due to poor readability, I will assume compiler does it for me
 		case APPLY:
+			if (applyHasDataFor(theme)) {
+				this->active_theme = theme;
+			}
 			break;
 
 		case APPLY_LIST:
+			if (applyListHasDataFor(theme)) {
+				this->active_theme = theme;
+			}
 			break;
 
 		case SUB:
-			std::get<SUB_DATA>(this->data).get()->applyAll(theme);
+			std::get<SUB_DATA>(this->data).get()->applyAll(theme, numThemes);
+			this->active_theme = std::get<SUB_DATA>(this->data).get()->calcMostUsed(numThemes);
 			break;
 
 		case LIST:
-			std::get<LIST_DATA>(this->data).get()->applyAll(theme);
-			break;
+			{		
+				List *list = std::get<LIST_DATA>(this->data).get();
+				if (list->hasDataFor(theme)) {
+					this->active_theme = theme;
+					list->applyAll(theme);
+				}
+				break;
+			}
 
 		case LIST_PICTURE:
-			std::get<LIST_DATA>(this->data).get()->applyAll(theme);
-			break;
+			{		
+				List *list = std::get<LIST_DATA>(this->data).get();
+				if (list->hasDataFor(theme)) {
+					this->active_theme = theme;
+					list->applyAll(theme);
+				}
+				break;
+			}
 	}
+}
+
+bool Entry::applyHasDataFor(int theme) const {
+	const APPLY_DATA &vec = std::get<APPLY_DATA>(this->data);
+	if (vec[theme].size() == 0) return false;
+
+	return true;
+}
+
+bool Entry::applyListHasDataFor(int theme) const {
+	const APPLY_LIST_DATA &vec = std::get<APPLY_LIST_DATA>(this->data);
+	if (vec[theme].size() == 0) return false;
+
+	return true;
 }

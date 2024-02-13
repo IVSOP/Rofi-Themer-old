@@ -92,6 +92,8 @@ std::string List::menu(int theme, int *current_theme, std::string &input, std::s
 		return menuOptions(theme, *current_theme, info, back_info, color_icons);
 	} else {
 		// option chosen
+		// if (hasDataFor(theme)) { // no need for this, since if the results don't exist they would not be shown anyway (so not clickable)
+
 		this->selected_option = std::stoi(input);
 		*current_theme = theme;
 		// printf("Current theme is now %d\n", *current_theme);
@@ -106,4 +108,10 @@ void List::applyAll(int theme) {
 
 std::string List::getActive() const {
 	return rofi_active(this->selected_option);
+}
+
+bool List::hasDataFor(int theme) const {
+	if (this->data[theme].size() == 0) return false;
+
+	return true;
 }

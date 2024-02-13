@@ -1,4 +1,4 @@
-- [ ] Do not allow aplying empty options
+- [x] Do not allow aplying empty options
 - [ ] Save to file
 - [ ] Kill daemon
 - [ ] Logging

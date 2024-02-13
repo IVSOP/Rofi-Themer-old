@@ -102,11 +102,15 @@ std::vector<int> Table::getThemes(int numThemes) const {
 std::string Table::showEntry(Entry &entry, const std::string &name, int theme, std::string &input, std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons) {
 	switch (entry.type) {
 		case APPLY: // no further parsing required, option needs to be set. maybe see if string is "" for safety?
-			entry.active_theme = theme;
+			if (entry.applyHasDataFor(theme)) {
+				entry.active_theme = theme;
+			}
 			return menu_all(theme, info, back_info, color_icons);
 			break;
 		case APPLY_LIST:
-			entry.active_theme = theme;
+			if (entry.applyListHasDataFor(theme)) {
+				entry.active_theme = theme;
+			}
 			return menu_all(theme, info, back_info, color_icons);
 			break;
 		case SUB: // need to go into subtable
@@ -167,9 +171,9 @@ std::string Table::getActive(int theme) {
 	return rofi_active(vec);
 }
 
-void Table::applyAll(int theme) {
+void Table::applyAll(int theme, int numThemes) {
 	for (auto &entrypair : this->data) { // got lazy iterating values only
-		entrypair.second.applyAll(theme);
+		entrypair.second.applyAll(theme, numThemes);
 	}
 }
 
@@ -194,7 +198,7 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 	if (token.length() == 0) { // show menu of this table
 		return menu_all(theme, info, back_info, color_icons);
 	} else if (token == "*") { // apply all options on this table
-		applyAll(theme);
+		applyAll(theme, color_icons.size());
 		return menu_all(theme, info, back_info, color_icons);
 	} else {
 		try {

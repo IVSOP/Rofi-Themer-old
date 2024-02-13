@@ -19,7 +19,7 @@ struct Table {
 	int calcMostUsed(int numThemes) const;
 	std::vector<int> getThemes(int numThemes) const;
 
-	void applyAll(int theme);
+	void applyAll(int theme, int numThemes);
 	std::string getActive(int theme);
 	std::string menu_all(int theme, const std::string &info, const std::string &back_info, const std::vector<std::string> &color_icons);
 
