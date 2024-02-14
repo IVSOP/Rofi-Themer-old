@@ -15,7 +15,7 @@ https://github.com/IVSOP/Rofi-Themer/assets/108223142/06f85920-b04f-4bfa-a0c8-e7
 - [Example usage](#Example_usage)
 *******
 
-There is an example dataset provided in data/, which I will use for all examples
+There is an example dataset provided in data/, which I will use for all examples.
 
 <div id="Compiling"/>
 
@@ -79,7 +79,7 @@ Syntax: `entry_name;apply;number of currently selected theme;option for theme 0;
 
 The same as above, except the options have many values instead of one.
 
-I made this because I needed some options that had to all be applied together, and this does just that, with a single click on this entry.
+I made this to allow applying many options together, with a single click on this entry.
 
 Syntax: `entry_name;apply_list;number of currently selected theme;[blablabla;blablabla;...];[a;b;c];...`
 
@@ -105,7 +105,7 @@ Syntax: `entry_name;list;number of currently selected theme;number of index sele
 
 Exactly the same as above, but the entries are displayed as images.
 
-I made this just so that selecting background pictures displays a preview of the pictures.
+I made this to allow, for example, previewing background images when selecting them.
 
 Syntax: same as above, but `list_picture` instead of `list`
 
@@ -192,4 +192,4 @@ exec_always --no-startup-id $HOME/.config/rofi/current-theme/get-theme.sh
 
 This project is a C++ rewrite of [I-Themer](https://github.com/IVSOP/I-Themer), due to it being too much of a mess, and also has some more features.
 
-After making this I found out about gnu stow, which does something very similar. In the future I might try to use it with this
+After making this I found out about gnu stow, which does something very similar. In the future I might try to use it with this.
