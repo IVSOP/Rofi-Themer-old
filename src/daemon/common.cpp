@@ -11,7 +11,7 @@ std::string rofi_active(const std::vector<int> &vec) {
 	if (vec.size() == 0) return "";
 
 	std::string res = std::string("") + INIT_ESCAPE + "active" + ESCAPE_SEP;
-	int i;
+	unsigned int i;
 	for (i = 0; i < vec.size() - 1; i++) {
 		res += std::to_string(vec[i]) + ',';
 	}

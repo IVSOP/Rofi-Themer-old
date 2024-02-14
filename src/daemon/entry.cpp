@@ -19,7 +19,7 @@ Entry::Entry(const std::string &name, std::string &line, const std::string &data
 		parseApplyList(data);
 	} else if (typestr == "sub") {
 		this->type = SUB;
-		parseSub(name, data, dataDir, numThemes);
+		parseSub(name, dataDir, numThemes);
 	} else if (typestr == "list") {
 		this->type = LIST;
 		parseList(data, false);
@@ -63,7 +63,7 @@ void Entry::parseApply(std::string &line) {
 	this->data = vec;
 }
 
-void Entry::parseSub(const std::string &name, std::string &line, const std::string dataDir, int numThemes) {
+void Entry::parseSub(const std::string &name, const std::string dataDir, int numThemes) {
 	this->data.emplace<SUB_DATA>(std::make_unique<Table>(dataDir + name + ".tb", dataDir, numThemes));
 	this->active_theme = std::get<SUB_DATA>(this->data).get()->calcMostUsed(numThemes);
 }
@@ -233,7 +233,7 @@ void Entry::applyAll(int theme, int numThemes) {
 				List *list = std::get<LIST_DATA>(this->data).get();
 				if (list->hasDataFor(theme)) {
 					this->active_theme = theme;
-					list->applyAll(theme);
+					list->applyAll();
 				}
 				break;
 			}
@@ -243,7 +243,7 @@ void Entry::applyAll(int theme, int numThemes) {
 				List *list = std::get<LIST_DATA>(this->data).get();
 				if (list->hasDataFor(theme)) {
 					this->active_theme = theme;
-					list->applyAll(theme);
+					list->applyAll();
 				}
 				break;
 			}

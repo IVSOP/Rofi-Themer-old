@@ -25,7 +25,7 @@ struct Entry {
 	~Entry() = default;
 	void parseApply(std::string &line);
 	void parseApplyList(std::string &line);
-	void parseSub(const std::string &name, std::string &line, const std::string dataDir, int numThemes);
+	void parseSub(const std::string &name, const std::string dataDir, int numThemes);
 	void parseList(std::string &line, bool show_pictures);
 
 	void print(int depth_level) const;

@@ -21,7 +21,7 @@
 	#define SOCK_PATH "build/Themer-socket"
 #endif
 
-int main (int argc, char **argv) {
+int main () {
 
 	int sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sockfd < 0) {
@@ -38,7 +38,7 @@ int main (int argc, char **argv) {
 	socklen_t data_len = strlen(server_addr.sun_path) + sizeof(server_addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
 	if (connect(sockfd, (struct sockaddr *)&server_addr, data_len) < 0) {
-        puts("Error connecting to daemon");
+        printf("Error connecting to daemon at %s\n", server_addr.sun_path);
         return EXIT_FAILURE;
     }
 
@@ -48,7 +48,7 @@ int main (int argc, char **argv) {
 
 	char *info = getenv("ROFI_INFO");
 	if (info != nullptr) {
-		strncpy(msg.str, info, MESSAGE_STR_SIZE);
+		strncpy(msg.str, info, MESSAGE_STR_SIZE - 1);  // for the compiler to shut up. I use write() instead of print so it should be fine either way
 	}
 
 

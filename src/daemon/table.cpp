@@ -62,7 +62,7 @@ std::string Table::read(std::string &input) const {
 			return entry.read(input);
 
 		} catch (const std::out_of_range& e) {
-			printf("'%s' does not exist in the map\n", name);
+			printf("'%s' does not exist in the map\n", name.c_str());
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -208,7 +208,7 @@ std::string Table::menu(int theme, std::string &input, std::string &info, const 
 			// std::string rofi_str = entry.menu(token, theme, input, info, color_icons);
 
 		} catch (const std::out_of_range& e) {
-			printf("'%s' does not exist in the map\n", token);
+			printf("'%s' does not exist in the map\n", token.c_str());
 			exit(EXIT_FAILURE);
 		}
 		

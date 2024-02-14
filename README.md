@@ -46,7 +46,7 @@ Read - queries daemon for stored data: `./Scripts/read.sh <string>`. The string 
 Please see [Data format](#Data_format) to better understand this behaviour and the meaning of the types
 
 
-> :warning: Unfortunately rofi messes up passing arguments to the scripts, so some things had to be hardcoded, such as the path to the binaries inside the menu and read scripts, and the location of the socket, defined in every main. However, you can choose a new location for the socket by passing it to build.sh as an argument.
+> :warning: Unfortunately rofi messes up passing arguments to the scripts, so some things had to be hardcoded, such as the path to the binaries inside the menu and read scripts, and the location of the socket, defined in every main. However, you can choose a new location for the socket by passing it to build.sh as an argument (use the full path, and name the socket).
 > There is also currently no way to properly install this, so you can also have lots of fun editing the paths in the Scripts/ as you see fit.
 
 *******

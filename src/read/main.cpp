@@ -43,14 +43,14 @@ int main (int argc, char **argv) {
 	socklen_t data_len = strlen(server_addr.sun_path) + sizeof(server_addr.sun_family); // wtf????? should I just use sizeof(addr))???
 
 	if (connect(sockfd, (struct sockaddr *)&server_addr, data_len) < 0) {
-        print_error("Error connecting to daemon");
+        fprintf(stderr, "Error connecting to daemon at %s\n", server_addr.sun_path);
         return EXIT_FAILURE;
     }
 
 	Message msg;
 	msg.type = READ;
 	// strncpy(msg.str, QUERY, MESSAGE_STR_SIZE); wrong, query is in the message type and not as a string
-	strncpy(msg.str, argv[1], MESSAGE_STR_SIZE);
+	strncpy(msg.str, argv[1], MESSAGE_STR_SIZE - 1); // for the compiler to shut up. I use write() instead of print so it should be fine either way
 
 	write(sockfd, &msg, sizeof(Message));
 

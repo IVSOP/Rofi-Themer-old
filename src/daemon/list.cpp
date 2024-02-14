@@ -21,7 +21,7 @@ void List::parseList(std::string list) {
 }
 
 List::List(std::string &line, bool show_pictures)
-: show_pictures(show_pictures), data()
+: data(), show_pictures(show_pictures)
 {
 	// get selected option, should be first number
 	size_t start = line.find(';');
@@ -101,8 +101,8 @@ std::string List::menu(int theme, int *current_theme, std::string &input, std::s
 	}
 }
 
-// aplies first option by default (even if it doesn't exist??????????????)
-void List::applyAll(int theme) {
+// aplies first option by default, should only be called if option exists
+void List::applyAll() {
 	this->selected_option = 0;
 }
 

@@ -5,3 +5,4 @@
 - [ ] Error handling
 - [ ] Constructors in Message and OutMessage to detect errors etc
 - [ ] Remove need for ;[]; instead of just ;;
+- [ ] Use defines in common.h
