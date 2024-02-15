@@ -6,7 +6,11 @@ Rofi-Themer makes it easy to achieve even higher ricing levels by enabling you t
 
 At its core, it is just a [rofi script](https://davatorium.github.io/rofi/1.7.5/rofi-script.5/), but was not done in shell due to its complexity.
 
-https://github.com/IVSOP/Rofi-Themer/assets/108223142/06f85920-b04f-4bfa-a0c8-e7a3df8ebffe
+| | |
+| ---------------------- | ---------------------- |
+| ![all_blue](https://github.com/IVSOP/Rofi-Themer/assets/108223142/43143531-fa6a-4c6b-ae21-d59cc455851b) | ![blue_red](https://github.com/IVSOP/Rofi-Themer/assets/108223142/d297f648-46e8-4ef9-a929-5821156b1f43) |
+| ![all_red_rofi](https://github.com/IVSOP/Rofi-Themer/assets/108223142/7d839985-09e8-464a-b356-b0fc63c3ea21) | ![blue_purple](https://github.com/IVSOP/Rofi-Themer/assets/108223142/7f93949d-6f0c-433d-a0d6-91424c64f961) |
+
 
 *******
 - [Compiling](#Compiling)

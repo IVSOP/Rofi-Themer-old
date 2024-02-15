@@ -9,4 +9,4 @@
 # also insert executable path
 rofi -show theme-menu -modi theme-menu:"$HOME/Desktop/Rofi-Themer/build/Rofi-Themer-menu" -theme\
 	$HOME/.config/rofi/current-theme/dmenu-theme.rasi -font "cantarell regular 15"\
-	-show-icons -i -log ~/rofi.log # &>/tmp/rofi-theme.txt #&& i3-msg restart
+	-show-icons -i # -log ~/rofi.log # &>/tmp/rofi-theme.txt #&& i3-msg restart
