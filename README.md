@@ -8,8 +8,8 @@ At its core, it is just a [rofi script](https://davatorium.github.io/rofi/1.7.5/
 
 | | |
 | ---------------------- | ---------------------- |
-| ![all_blue](https://github.com/IVSOP/Rofi-Themer/assets/108223142/43143531-fa6a-4c6b-ae21-d59cc455851b) | ![blue_red](https://github.com/IVSOP/Rofi-Themer/assets/108223142/d297f648-46e8-4ef9-a929-5821156b1f43) |
-| ![all_red_rofi](https://github.com/IVSOP/Rofi-Themer/assets/108223142/7d839985-09e8-464a-b356-b0fc63c3ea21) | ![blue_purple](https://github.com/IVSOP/Rofi-Themer/assets/108223142/7f93949d-6f0c-433d-a0d6-91424c64f961) |
+| ![all_blue](https://github.com/IVSOP/Rofi-Themer/assets/108223142/a820697f-19f2-45a8-a84e-277be13240b6) | ![blue_red](https://github.com/IVSOP/Rofi-Themer/assets/108223142/87990464-cb70-4690-8311-b39177de9ddb) |
+| ![all_red_rofi](https://github.com/IVSOP/Rofi-Themer/assets/108223142/58f00850-9b7f-41a6-8eb4-35617af82c21) | ![blue_purple](https://github.com/IVSOP/Rofi-Themer/assets/108223142/0646a6ff-31d7-4de0-ac81-26bd6f8589db) |
 
 
 *******
