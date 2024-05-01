@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 # SET(GCC_COVERAGE_COMPILE_FLAGS "-O2 -Wall -Wextra -pedantic -std=c++17")
 
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3 -DDEBUG")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -pedantic -std=c++17")
 
 
@@ -23,6 +23,7 @@ endif()
 
 add_executable(Rofi-Themer-daemon
         src/daemon/main.cpp
+		src/daemon/files.cpp
 		src/daemon/data.cpp
 		src/daemon/entry.cpp
 		src/daemon/table.cpp

@@ -2,25 +2,23 @@
 #include <fstream>
 #include "errors.h"
 #include <algorithm>
+#include "files.h"
 
 Table::Table(const std::string &path, const std::string &dataDir, int numThemes) {
-	std::ifstream file(path);
-	if (!file.is_open()) {
-		print_error("Error opening file");
-		fprintf(stderr, "'%s'\n", path.c_str());
-		exit(1);
-    }
+	FileHandler filehandler(path);
 
-	// printf("parsing %s\n", path.c_str());
+#ifdef DEBUG
+	printf("parsing table from %s\n", path.c_str());
+#endif
 
-	std::string line;
+	std::string line = "";
 	size_t pos;
-    while (std::getline(file, line)) {
+    while (filehandler.getline(line)) {
 		pos = line.find(';');
 		std::string name = line.substr(0, pos);
 		std::string data = line.substr(pos + 1);
 
-		// WHAT THE FUCK?????? most cursed thing I have ever seen. why can I not just enter 3 arguments and live in peace wtf
+		// WHAT THE FUCK?????? most cursed thing I have ever seen
 		this->data.emplace(
 			::std::piecewise_construct, // special to enable forwarding
 			::std::forward_as_tuple(name), // arguments for key constructor
@@ -28,8 +26,6 @@ Table::Table(const std::string &path, const std::string &dataDir, int numThemes)
 		);
 		// this->data.emplace(name, Entry(name, data)); // error wtf???
     }
-
-	file.close();
 }
 
 void Table::print(int depth_level) {

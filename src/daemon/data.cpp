@@ -1,6 +1,6 @@
 #include "data.h"
-#include <fstream>
 #include "errors.h"
+#include "files.h"
 
 Data::Data(const std::string &dir)
 : color_icons(parseColors(dir + "color-icons")),
@@ -10,22 +10,13 @@ Data::Data(const std::string &dir)
 std::vector<std::string> Data::parseColors(const std::string &path) {
 	std::vector<std::string> vec;
 
-	std::ifstream file(path);
-	if (!file.is_open()) {
-		print_error("Error opening file");
-		exit(1);
-    }
+	FileHandler filehandler(path);
 
-	std::string line;
-	const std::string delim = "#";
-    while (std::getline(file, line)) {
-		// ignore comments, only valid at the start of the line for now
-		// if (line.compare(0, delim.length(), delim) != 0) {
-        	vec.emplace_back(line);
-		// } did not implement this, when files get overwritten it all goes away
-    }
+	std::string line = "";
 
-	file.close();
+	while (filehandler.getline(line)) {
+		vec.emplace_back(line);
+	}
 
 	return vec;
 }

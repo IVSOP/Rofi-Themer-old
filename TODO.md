@@ -1,4 +1,7 @@
-- [x] Do not allow aplying empty options
+- [x] Allow '\' for skipping a char
+- [ ] Ignore whitespace besides \n, unless in a "string"
+- [ ] Ignore empty lines aywhere???
+- [ ] Daemon command to refresh data
 - [ ] Save to file
 - [ ] Kill daemon
 - [ ] Logging

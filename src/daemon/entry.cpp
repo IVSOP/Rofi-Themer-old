@@ -8,6 +8,9 @@ Entry::Entry(const std::string &name, std::string &line, const std::string &data
 	std::string typestr = line.substr(0, pos);
 	std::string data = line.substr(pos + 1);
 
+#ifdef DEBUG
+	printf("parsing entry %s. Type: %s\n", name.c_str(), typestr.c_str());
+#endif
 	// second is what theme was selected
 
 	// very inefficient but it will be fast anyway, idc

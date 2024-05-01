@@ -96,7 +96,9 @@ int main (int argc, char **argv) {
 	//////////////////////////////////////////////// parsing theme file
 
 	Data data(argv[1]); // will parse the data
-	// data.print();
+#ifdef DEBUG
+	data.print();
+#endif
 
 	// std::string input = "rofi/*";
 	// puts(data.read(input).c_str());
@@ -105,7 +107,7 @@ int main (int argc, char **argv) {
 	// std::string res = data.menu(input);
 
 	//////////////////////////////////////////////// creating daemon
-
+#ifndef DEBUG
 	pid_t pid, sid;
 
     // Fork the process
@@ -139,6 +141,8 @@ int main (int argc, char **argv) {
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
+#endif
+
 
 	//////////////////////////////////////////////// listen for requests on the socket
 
